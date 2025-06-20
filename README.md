@@ -56,7 +56,7 @@ The script [`analysis/03_Birds_Global.R`](https://github.com/nmouquet/SAFE/blob/
 
 Figures are stored in `outputs/`.
 
-The following Figures and Tables can be reproduced with the script indicated in brackets (all in [`analysis/`](https://github.com/nmouquet/RLS_HUM_INT/blob/main/analysis/)):
+The following Figures and Tables can be reproduced with the script indicated in brackets (all in [`analysis/`](https://github.com/nmouquet/SAFE/blob/main/analysis/)):
     
 - Figure 1 has been produced with other means.
 - Figure 2 has been produced with other means.
