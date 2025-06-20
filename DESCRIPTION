@@ -1,4 +1,4 @@
-Package: SAFE_insu
+Package: SAFE
 Type: Package
 Title: Spatial Insurance of Distinct Ecological Functions
 Version: 0.0.1
@@ -11,8 +11,8 @@ Authors@R: c(
 Description: Research compendium of the article 'Spatial insurance of distinct 
         ecological functions' by Mouquet N. et al. submited to Ecology Letters 
         in 2025.
-URL: https://github.com/nmouquet/SAFE_insu
-BugReports: https://github.com/nmouquet/SAFE_insu/issues
+URL: https://github.com/nmouquet/SAFE
+BugReports: https://github.com/nmouquet/SAFE/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
