@@ -47,3 +47,10 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+
+#Big Files
+data/BIG_FILES/
+results/wdpa_I_II_union.RData
+results/wdpa_I_union.RData
+results/wdpa_I_IV_union.RData
