@@ -1,0 +1,1051 @@
+﻿@article{RN71,
+   author = {Arponen, Anni},
+   title = {Prioritizing species for conservation planning},
+   journal = {Biodiversity and Conservation},
+   volume = {21},
+   number = {4},
+   pages = {875-893},
+   ISSN = {1572-9710},
+   DOI = {10.1007/s10531-012-0242-1},
+   url = {https://doi.org/10.1007/s10531-012-0242-1},
+   year = {2012},
+   type = {Journal Article}
+}
+
+@article{RN44,
+   author = {Baselga, Andrés and Orme, C. David L.},
+   title = {betapart: an R package for the study of beta diversity},
+   journal = {Methods in Ecology and Evolution},
+   volume = {3},
+   number = {5},
+   pages = {808-812},
+   DOI = {https://doi.org/10.1111/j.2041-210X.2012.00224.x},
+   url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/j.2041-210X.2012.00224.x},
+   year = {2012},
+   type = {Journal Article}
+}
+
+@article{RN32,
+   author = {Bellwood, David R. and Hoey, Andrew S. and Choat, J. Howard},
+   title = {Limited functional redundancy in high diversity systems: resilience and ecosystem function on coral reefs},
+   journal = {Ecology Letters},
+   volume = {6},
+   number = {4},
+   pages = {281-285},
+   ISSN = {1461-023X},
+   DOI = {https://doi.org/10.1046/j.1461-0248.2003.00432.x},
+   url = {https://onlinelibrary.wiley.com/doi/abs/10.1046/j.1461-0248.2003.00432.x},
+   year = {2003},
+   type = {Journal Article}
+}
+
+@misc{RN56,
+   url = {http://www.birdlife.org},
+   year = {2019},
+   type = {Generic}
+}
+
+@article{RN73,
+   author = {Brodie, Jedediah F. and Gonzalez, Andrew and Mohd-Azlan, Jayasilan and Nelson, Cara R. and Tabor, Gary and Vasudev, Divya and Zeller, Katherine A. and Fletcher, Robert J.},
+   title = {A well-connected Earth: The science and conservation of organismal movement},
+   journal = {Science},
+   volume = {388},
+   number = {6745},
+   pages = {eadn2225},
+   DOI = {doi:10.1126/science.adn2225},
+   url = {https://www.science.org/doi/abs/10.1126/science.adn2225},
+   year = {2025},
+   type = {Journal Article}
+}
+
+@article{RN70,
+   author = {Brooks, T. M. and Mittermeier, R. A. and da Fonseca, G. A. B. and Gerlach, J. and Hoffmann, M. and Lamoreux, J. F. and Mittermeier, C. G. and Pilgrim, J. D. and Rodrigues, A. S. L.},
+   title = {Global Biodiversity Conservation Priorities},
+   journal = {Science},
+   volume = {313},
+   number = {5783},
+   pages = {58-61},
+   DOI = {doi:10.1126/science.1127609},
+   url = {https://www.science.org/doi/abs/10.1126/science.1127609},
+   year = {2006},
+   type = {Journal Article}
+}
+
+@article{RN12,
+   author = {Cadotte, Marc W. and Carscadden, Kelly and Mirotchnick, Nicholas},
+   title = {Beyond species: functional diversity and the maintenance of ecological processes and services},
+   journal = {Journal of Applied Ecology},
+   volume = {48},
+   number = {5},
+   pages = {1079-1087},
+   ISSN = {0021-8901},
+   DOI = {https://doi.org/10.1111/j.1365-2664.2011.02048.x},
+   url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/j.1365-2664.2011.02048.x},
+   year = {2011},
+   type = {Journal Article}
+}
+
+@article{RN77,
+   author = {Chave, J.},
+   title = {The problem of pattern and scale in ecology: what have we learned in 20years?},
+   journal = {Ecology Letters},
+   volume = {16},
+   pages = {4-16},
+   ISSN = {1461-023X},
+   DOI = {10.1111/ele.12048},
+   url = {<Go to ISI>://WOS:000319006400002},
+   year = {2013},
+   type = {Journal Article}
+}
+
+@article{RN69,
+   author = {Cui, Yu and Carmona, Carlos Pérez and Wang, Zhiheng},
+   title = {Identifying global conservation priorities for terrestrial vertebrates based on multiple dimensions of biodiversity},
+   journal = {Conservation Biology},
+   volume = {38},
+   number = {3},
+   pages = {e14205},
+   ISSN = {0888-8892},
+   DOI = {https://doi.org/10.1111/cobi.14205},
+   url = {https://conbio.onlinelibrary.wiley.com/doi/abs/10.1111/cobi.14205},
+   year = {2024},
+   type = {Journal Article}
+}
+
+@article{RN11,
+   author = {de Bello, Francesco and Fischer, Felícia M. and Puy, Javier and Shipley, Bill and Verdú, Miguel and Götzenberger, Lars and Lavorel, Sandra and Moretti, Marco and Wright, Ian J. and Berg, Matty P. and Carmona, Carlos Pérez and Cornelissen, J. Hans C. and Dias, André T. C. and Gibb, Heloise and Lepš, Jan and Madin, Joshua S. and Majeková, Maria and Pausas, Juli G. and Segrestin, Jules and Sobral, Mar and Zanne, Amy E. and Garnier, Eric},
+   title = {Raunkiæran shortfalls: Challenges and perspectives in trait-based ecology},
+   journal = {Ecological Monographs},
+   volume = {95},
+   number = {2},
+   pages = {e70018},
+   ISSN = {0012-9615},
+   DOI = {https://doi.org/10.1002/ecm.70018},
+   url = {https://esajournals.onlinelibrary.wiley.com/doi/abs/10.1002/ecm.70018},
+   year = {2025},
+   type = {Journal Article}
+}
+
+@article{RN13,
+   author = {de Bello, Francesco and Lavorel, Sandra and Hallett, Lauren M. and Valencia, Enrique and Garnier, Eric and Roscher, Christiane and Conti, Luisa and Galland, Thomas and Goberna, Marta and Májeková, Maria and Montesinos-Navarro, Alicia and Pausas, Juli G. and Verdú, Miguel and E-Vojtkó, Anna and Götzenberger, Lars and Lepš, Jan},
+   title = {Functional trait effects on ecosystem stability: assembling the jigsaw puzzle},
+   journal = {Trends in Ecology & Evolution},
+   volume = {36},
+   number = {9},
+   pages = {822-836},
+   ISSN = {0169-5347},
+   DOI = {https://doi.org/10.1016/j.tree.2021.05.001},
+   url = {https://www.sciencedirect.com/science/article/pii/S0169534721001464},
+   year = {2021},
+   type = {Journal Article}
+}
+
+@article{RN4,
+   author = {Dee, Laura E. and Cowles, Jane and Isbell, Forest and Pau, Stephanie and Gaines, Steven D. and Reich, Peter B.},
+   title = {When Do Ecosystem Services Depend on Rare Species?},
+   journal = {Trends in Ecology & Evolution},
+   volume = {34},
+   number = {8},
+   pages = {746-758},
+   ISSN = {0169-5347},
+   DOI = {10.1016/j.tree.2019.03.010},
+   url = {https://doi.org/10.1016/j.tree.2019.03.010},
+   year = {2019},
+   type = {Journal Article}
+}
+
+@article{RN35,
+   author = {Delalandre, L. and Gauzere, P. and Thuiller, W. and Cadotte, M. and Mouquet, N. and Mouillot, D. and Munoz, F. and Denelle, P. and Loiseau, N. and Morin, X. and Violle, C.},
+   title = {Functionally distinct tree species support long-term productivity in extreme environments},
+   journal = {Proceedings of the Royal Society B-Biological Sciences},
+   volume = {289},
+   number = {1967},
+   ISSN = {0962-8452},
+   DOI = {10.1098/rspb.2021.1694},
+   url = {<Go to ISI>://WOS:000743897700010},
+   year = {2022},
+   type = {Journal Article}
+}
+
+@article{RN24,
+   author = {Dennis, Andrew J. and Westcott, David A.},
+   title = {Reducing complexity when studying seed dispersal at community scales: a functional classification of vertebrate seed dispersers in tropical forests},
+   journal = {Oecologia},
+   volume = {149},
+   number = {4},
+   pages = {620-634},
+   ISSN = {1432-1939},
+   DOI = {10.1007/s00442-006-0475-3},
+   url = {https://doi.org/10.1007/s00442-006-0475-3},
+   year = {2006},
+   type = {Journal Article}
+}
+
+@article{RN76,
+   author = {Deschamps, Gabrielle and Poggiato, Giovanni and Brun, Philipp and Galiez, Clovis and Thuiller, Wilfried},
+   title = {Predict first–assemble later versus assemble first–predict later: Revisiting the dilemma for functional biogeography},
+   journal = {Methods in Ecology and Evolution},
+   volume = {14},
+   number = {10},
+   pages = {2680-2696},
+   DOI = {https://doi.org/10.1111/2041-210X.14203},
+   url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.14203},
+   year = {2023},
+   type = {Journal Article}
+}
+
+@article{RN17,
+   author = {Díaz, Sandra},
+   title = {Plant functional traits and the entangled phenotype},
+   journal = {Functional Ecology},
+   volume = {39},
+   number = {5},
+   pages = {1144-1159},
+   ISSN = {0269-8463},
+   DOI = {https://doi.org/10.1111/1365-2435.70017},
+   url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/1365-2435.70017},
+   year = {2025},
+   type = {Journal Article}
+}
+
+@article{RN9,
+   author = {Diaz, S. and Cabido, M.},
+   title = {Vive la difference: plant functional diversity matters to ecosystem processes},
+   journal = {Trends in Ecology & Evolution},
+   volume = {16},
+   pages = {646-655},
+   year = {2001},
+   type = {Journal Article}
+}
+
+@article{RN38,
+   author = {Dirzo, Rodolfo and Young, Hillary S. and Galetti, Mauro and Ceballos, Gerardo and Isaac, Nick J. B. and Collen, Ben},
+   title = {Defaunation in the Anthropocene},
+   journal = {Science},
+   volume = {345},
+   number = {6195},
+   pages = {401-406},
+   DOI = {doi:10.1126/science.1251817},
+   url = {https://www.science.org/doi/abs/10.1126/science.1251817},
+   year = {2014},
+   type = {Journal Article}
+}
+
+@article{RN74,
+   author = {Eken, Güven and Bennun, Leon and Brooks, Thomas M. and Darwall, Will and Fishpool, Lincoln D. C. and Foster, Matt and Knox, David and Langhammer, Penny and Matiku, Paul and Radford, Elizabeth and Salaman, Paul and Sechrest, Wes and Smith, Michael L. and Spector, Sacha and Tordoff, Andrew},
+   title = {Key Biodiversity Areas as Site Conservation Targets},
+   journal = {BioScience},
+   volume = {54},
+   number = {12},
+   pages = {1110-1118},
+   ISSN = {0006-3568},
+   DOI = {10.1641/0006-3568(2004)054[1110:Kbaasc]2.0.Co;2},
+   url = {https://doi.org/10.1641/0006-3568(2004)054[1110:KBAASC]2.0.CO;2},
+   year = {2004},
+   type = {Journal Article}
+}
+
+@article{RN60,
+   author = {Ficetola, Gentile Francesco and Mazel, Florent and Thuiller, Wilfried},
+   title = {Global determinants of zoogeographical boundaries},
+   journal = {Nature Ecology & Evolution},
+   volume = {1},
+   number = {4},
+   pages = {0089},
+   ISSN = {2397-334X},
+   DOI = {10.1038/s41559-017-0089},
+   url = {https://doi.org/10.1038/s41559-017-0089},
+   year = {2017},
+   type = {Journal Article}
+}
+
+@book{RN10,
+   author = {Garnier, E. and Navas, M.L. and Grigulis, K.},
+   title = {Plant Functional Diversity: Organism Traits, Community Structure, and Ecosystem Properties},
+   publisher = {Oxford University Press},
+   address = {Oxford},
+   year = {2016},
+   type = {Book}
+}
+
+@article{RN27,
+   author = {Gaüzère, Pierre and Blonder, Benjamin and Denelle, Pierre and Fournier, Bertrand and Grenié, Matthias and Delalandre, Léo and Münkemüller, Tamara and Munoz, Francois and Violle, Cyrille and Thuiller, Wilfried},
+   title = {The functional trait distinctiveness of plant species is scale dependent},
+   journal = {wu},
+   volume = {2023},
+   number = {1},
+   pages = {e06504},
+   ISSN = {0906-7590},
+   DOI = {https://doi.org/10.1111/ecog.06504},
+   url = {https://nsojournals.onlinelibrary.wiley.com/doi/abs/10.1111/ecog.06504},
+   year = {2023},
+   type = {Journal Article}
+}
+
+@article{RN78,
+   author = {Gaüzère, P. and Botella, C. and Poggiato, G. and O'Connor, L. and Di Marco, M. and Dragonetti, C. and Maiorano, L. and Renaud, J. and Thuiller, W.},
+   title = {Dissimilarity of vertebrate trophic interactions reveals spatial uniqueness but functional redundancy across Europe},
+   journal = {Curr Biol},
+   volume = {33},
+   number = {23},
+   pages = {5263-5271.e3},
+   ISSN = {0960-9822},
+   DOI = {10.1016/j.cub.2023.10.069},
+   year = {2023},
+   type = {Journal Article}
+}
+
+@article{RN29,
+   author = {Grenié, Matthias and Denelle, Pierre and Tucker, Caroline M. and Munoz, François and Violle, Cyrille},
+   title = {funrar: An R package to characterize functional rarity},
+   journal = {Diversity and Distributions},
+   volume = {23},
+   number = {12},
+   pages = {1365-1371},
+   ISSN = {1366-9516},
+   DOI = {https://doi.org/10.1111/ddi.12629},
+   url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/ddi.12629},
+   year = {2017},
+   type = {Journal Article}
+}
+
+@article{RN7,
+   author = {Gross, Nicolas and Bagousse-Pinguet, Yoann Le and Liancourt, Pierre and Berdugo, Miguel and Gotelli, Nicholas J. and Maestre, Fernando T.},
+   title = {Functional trait diversity maximizes ecosystem multifunctionality},
+   journal = {Nature Ecology & Evolution},
+   volume = {1},
+   number = {5},
+   pages = {0132},
+   ISSN = {2397-334X},
+   DOI = {10.1038/s41559-017-0132},
+   url = {https://doi.org/10.1038/s41559-017-0132},
+   year = {2017},
+   type = {Journal Article}
+}
+
+@article{RN59,
+   author = {Holt, Ben G. and Lessard, Jean-Philippe and Borregaard, Michael K. and Fritz, Susanne A. and Araújo, Miguel B. and Dimitrov, Dimitar and Fabre, Pierre-Henri and Graham, Catherine H. and Graves, Gary R. and Jønsson, Knud A. and Nogués-Bravo, David and Wang, Zhiheng and Whittaker, Robert J. and Fjeldså, Jon and Rahbek, Carsten},
+   title = {An Update of Wallace’s Zoogeographic Regions of the World},
+   journal = {Science},
+   volume = {339},
+   number = {6115},
+   pages = {74-78},
+   DOI = {doi:10.1126/science.1228282},
+   url = {https://www.science.org/doi/abs/10.1126/science.1228282},
+   year = {2013},
+   type = {Journal Article}
+}
+
+@article{RN52,
+   author = {Jenkins, D. G. and Ricklefs, R. E.},
+   title = {Biogeography and ecology: two views of one world},
+   journal = {Philos Trans R Soc Lond B Biol Sci},
+   volume = {366},
+   number = {1576},
+   pages = {2331-5},
+   ISSN = {0962-8436 (Print)
+0962-8436},
+   DOI = {10.1098/rstb.2011.0064},
+   year = {2011},
+   type = {Journal Article}
+}
+
+@article{RN62,
+   author = {Kark, Salit and and van Rensburg, Berndt J.},
+   title = {Ecotones: Marginal or Central Areas of Transition?},
+   journal = {Israel Journal of Ecology & Evolution},
+   volume = {52},
+   number = {1},
+   pages = {29-53},
+   ISSN = {1565-9801},
+   DOI = {10.1560/IJEE.52.1.29},
+   url = {https://doi.org/10.1560/IJEE.52.1.29},
+   year = {2006},
+   type = {Journal Article}
+}
+
+@article{RN39,
+   author = {Keck, François and Peller, Tianna and Alther, Roman and Barouillet, Cécilia and Blackman, Rosetta and Capo, Eric and Chonova, Teofana and Couton, Marjorie and Fehlinger, Lena and Kirschner, Dominik and Knüsel, Mara and Muneret, Lucile and Oester, Rebecca and Tapolczai, Kálmán and Zhang, Heng and Altermatt, Florian},
+   title = {The global human impact on biodiversity},
+   journal = {Nature},
+   volume = {641},
+   number = {8062},
+   pages = {395-400},
+   ISSN = {1476-4687},
+   DOI = {10.1038/s41586-025-08752-2},
+   url = {https://doi.org/10.1038/s41586-025-08752-2},
+   year = {2025},
+   type = {Journal Article}
+}
+
+@article{RN65,
+   author = {Kervellec, Maëlis and Couturier, Thibaut and Bauduin, Sarah and Chenesseau, Delphine and Defos du Rau, Pierre and Drouet-Hoguet, Nolwenn and Duchamp, Christophe and Steinmetz, Julien and Vandel, Jean-Michel and Gimenez, Olivier},
+   title = {Bringing circuit theory into spatial occupancy models to assess landscape connectivity},
+   journal = {Methods in Ecology and Evolution},
+   volume = {n/a},
+   number = {n/a},
+   ISSN = {2041-210X},
+   DOI = {https://doi.org/10.1111/2041-210X.14418},
+   url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.14418},
+   year = {2024},
+   type = {Journal Article}
+}
+
+@article{RN54,
+   author = {Khattar, Gabriel and Peres-Neto, Pedro R.},
+   title = {The Geography of Metacommunities: Landscape Characteristics Drive Geographic Variation in the Assembly Process through Selecting Species Pool Attributes},
+   journal = {The American Naturalist},
+   volume = {203},
+   number = {5},
+   pages = {E142-E156},
+   DOI = {10.1086/729423},
+   url = {https://www.journals.uchicago.edu/doi/abs/10.1086/729423},
+   year = {2024},
+   type = {Journal Article}
+}
+
+@article{RN15,
+   author = {Laughlin, Daniel C.},
+   title = {The intrinsic dimensionality of plant traits and its relevance to community assembly},
+   journal = {Journal of Ecology},
+   volume = {102},
+   number = {1},
+   pages = {186-193},
+   ISSN = {0022-0477},
+   DOI = {https://doi.org/10.1111/1365-2745.12187},
+   url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/1365-2745.12187},
+   year = {2014},
+   type = {Journal Article}
+}
+
+@article{RN18,
+   author = {Lavorel, S. and Garnier, E.},
+   title = {Predicting changes in community composition and ecosystem functioning from plant traits: revisiting the Holy Grail},
+   journal = {Functional Ecology},
+   volume = {16},
+   number = {5},
+   pages = {545-556},
+   ISSN = {0269-8463},
+   DOI = {https://doi.org/10.1046/j.1365-2435.2002.00664.x},
+   url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1046/j.1365-2435.2002.00664.x},
+   year = {2002},
+   type = {Journal Article}
+}
+
+@article{RN46,
+   author = {Leibold, M. A. and Holyoak, M. and Mouquet, N. and Amarasekare, P. and Chase, J. M. and Hoopes, M. F. and Holt, R. D. and Shurin, J. B. and Law, R. and Tilman, D. and Loreau, M. and Gonzalez, A.},
+   title = {The metacommunity concept: a framework for multi-scale community ecology},
+   journal = {Ecology Letters},
+   volume = {7},
+   number = {7},
+   pages = {601-613},
+   ISSN = {1461-023X},
+   DOI = {10.1111/j.1461-0248.2004.00608.x},
+   url = {<Go to ISI>://WOS:000221853400010},
+   year = {2004},
+   type = {Journal Article}
+}
+
+@article{RN40,
+   author = {Leibold, M. A. and Holyoak, M.  and Mouquet, N. and P., Amarasekare and J., Chase and M., Hoopes and R., Holt and J., Shurin and R., Law and D., Tilman and M., Loreau and A., Gonzalez},
+   title = {The metacommunity concept: A framework for multi-scale community ecology},
+   journal = {Ecology letters},
+   volume = {7},
+   pages = {601-613},
+   year = {2004},
+   type = {Journal Article}
+}
+
+@article{RN53,
+   author = {Leibold, Mathew A. and Rudolph, F. Javiera and Blanchet, F. Guillaume and De Meester, Luc and Gravel, Dominique and Hartig, Florian and Peres-Neto, Pedro and Shoemaker, Lauren and Chase, Jonathan M.},
+   title = {The internal structure of metacommunities},
+   journal = {Oikos},
+   volume = {2022},
+   number = {1},
+   ISSN = {0030-1299},
+   DOI = {https://doi.org/10.1111/oik.08618},
+   url = {https://nsojournals.onlinelibrary.wiley.com/doi/abs/10.1111/oik.08618},
+   year = {2022},
+   type = {Journal Article}
+}
+
+@article{RN42,
+   author = {Lengyel, Attila and Botta-Dukát, Zoltán},
+   title = {A guide to between-community functional dissimilarity measures},
+   journal = {Ecography},
+   volume = {2023},
+   number = {11},
+   pages = {e06718},
+   ISSN = {0906-7590},
+   DOI = {https://doi.org/10.1111/ecog.06718},
+   url = {https://nsojournals.onlinelibrary.wiley.com/doi/abs/10.1111/ecog.06718},
+   year = {2023},
+   type = {Journal Article}
+}
+
+@article{RN37,
+   author = {Li, Jie and Wei, Yanan and Lv, Ruixue and Liu, Weixing and Niu, Kechang},
+   title = {Plant species loss reduces rare soil microbes through diversity effects amplified by multitrophic interactions},
+   journal = {Journal of Ecology},
+   volume = {113},
+   number = {4},
+   pages = {943-954},
+   ISSN = {0022-0477},
+   DOI = {https://doi.org/10.1111/1365-2745.70013},
+   url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/1365-2745.70013},
+   year = {2025},
+   type = {Journal Article}
+}
+
+@article{RN31,
+   author = {Loiseau, Nicolas and Mouquet, Nicolas and Casajus, Nicolas and Grenie, Matthias and Gueguen, Maya and Maitner, Brian and Mouillot, David and Ostling, Annette and Renaud, Julien and Tucker, Caroline and Velez, Laure and Thuiller, Wilfried and Violle, Cyrille},
+   title = {Global distribution and conservation status of ecologically rare mammal and bird species},
+   journal = {Nature Communications},
+   volume = {11},
+   number = {1},
+   ISSN = {2041-1723},
+   DOI = {10.1038/s41467-020-18779-w},
+   url = {<Go to ISI>://WOS:000581918200002},
+   year = {2020},
+   type = {Journal Article}
+}
+
+@article{RN2,
+   author = {Loreau, Michel and Barbier, Matthieu and Filotas, Elise and Gravel, Dominique and Isbell, Forest and Miller, Steve J. and Montoya, Jose M. and Wang, Shaopeng and Aussenac, Raphaël and Germain, Rachel and Thompson, Patrick L. and Gonzalez, Andrew and Dee, Laura E.},
+   title = {Biodiversity as insurance: from concept to measurement and application},
+   journal = {Biological Reviews},
+   volume = {96},
+   number = {5},
+   pages = {2333-2354},
+   ISSN = {1464-7931},
+   DOI = {https://doi.org/10.1111/brv.12756},
+   url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/brv.12756},
+   year = {2021},
+   type = {Journal Article}
+}
+
+@article{RN5,
+   author = {Loreau, M. and Mouquet, N. and Gonzalez, A.},
+   title = {Biodiversity as spatial insurance in heterogeneous landscapes},
+   journal = {Proceedings of the National Academy of Sciences of the U.S.A.},
+   volume = {100},
+   pages = {12765–12770},
+   year = {2003},
+   type = {Journal Article}
+}
+
+@article{RN23,
+   author = {Mahaut, Lucie and Loiseau, Nicolas and Villéger, Sébastien and Auber, Arnaud and Hautecoeur, Cyril and Maire, Anthony and Mellin, Camille and Mouquet, Nicolas and Stuart-Smith, Rick and Violle, Cyrille and Mouillot, David},
+   title = {Functional diversity shapes the stability of reef fish biomass under global change},
+   journal = {Proceedings of the Royal Society B: Biological Sciences},
+   volume = {292},
+   number = {2046},
+   pages = {20250252},
+   DOI = {doi:10.1098/rspb.2025.0252},
+   url = {https://royalsocietypublishing.org/doi/abs/10.1098/rspb.2025.0252},
+   year = {2025},
+   type = {Journal Article}
+}
+
+@article{RN67,
+   author = {Mammola, Stefano and Cardoso, Pedro},
+   title = {Functional diversity metrics using kernel density n-dimensional hypervolumes},
+   journal = {Methods in Ecology and Evolution},
+   volume = {11},
+   number = {8},
+   pages = {986-995},
+   DOI = {https://doi.org/10.1111/2041-210X.13424},
+   url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.13424},
+   year = {2020},
+   type = {Journal Article}
+}
+
+@article{RN79,
+   author = {McKnight, M. W. and White, P. S. and McDonald, R. I. and Lamoreux, J. F. and Sechrest, W. and Ridgely, R. S. and Stuart, S. N.},
+   title = {Putting beta-diversity on the map: Broad-scale congruence and coincidence in the extremes},
+   journal = {Plos Biology},
+   volume = {5},
+   number = {10},
+   pages = {2424-2432},
+   ISSN = {1544-9173},
+   url = {<Go to ISI>://000251072700028 },
+   year = {2007},
+   type = {Journal Article}
+}
+
+@article{RN21,
+   author = {McLean, Matthew and Auber, Arnaud and Graham, Nicholas A. J. and Houk, Peter and Villéger, Sébastien and Violle, Cyrille and Thuiller, Wilfried and Wilson, Shaun K. and Mouillot, David},
+   title = {Trait structure and redundancy determine sensitivity to disturbance in marine fish communities},
+   journal = {Global Change Biology},
+   volume = {25},
+   number = {10},
+   pages = {3424-3437},
+   ISSN = {1354-1013},
+   DOI = {https://doi.org/10.1111/gcb.14662},
+   url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/gcb.14662},
+   year = {2019},
+   type = {Journal Article}
+}
+
+@article{RN48,
+   author = {Mills, L. S. and Soule, M. E. and Doak, D. F.},
+   title = {The Keystone-Species Concept in Ecology and Conservation},
+   journal = {Bioscience},
+   volume = {43},
+   number = {4},
+   pages = {219-224},
+   ISSN = {0006-3568},
+   url = {<Go to ISI>://A1993KU40800004 },
+   year = {1993},
+   type = {Journal Article}
+}
+
+@article{RN22,
+   author = {Mori, A. S. and Furukawa, T. and Sasaki, T.},
+   title = {Response diversity determines the resilience of ecosystems to environmental change},
+   journal = {Biol Rev Camb Philos Soc},
+   volume = {88},
+   number = {2},
+   pages = {349-64},
+   ISSN = {0006-3231},
+   DOI = {10.1111/brv.12004},
+   year = {2013},
+   type = {Journal Article}
+}
+
+@article{RN28,
+   author = {Mouillot, D. and Bellwood, D. R. and Baraloto, C. and Chave, J. and Galzin, R. and Harmelin-Vivien, M. and Kulbicki, M. and Lavergne, S. and Lavorel, S. and Mouquet, N. and Paine, C. E. T. and Renaud, J. and Thuiller, W.},
+   title = {Rare Species Support Vulnerable Functions in High-Diversity Ecosystems},
+   journal = {PLoS Biology},
+   volume = {11},
+   number = {5},
+   ISSN = {1545-7885},
+   DOI = {e1001569
+10.1371/journal.pbio.1001569},
+   url = {<Go to ISI>://WOS:000319669800011},
+   year = {2013},
+   type = {Journal Article}
+}
+
+@article{RN16,
+   author = {Mouillot, David and Loiseau, Nicolas and Grenié, Matthias and Algar, Adam C. and Allegra, Michele and Cadotte, Marc W. and Casajus, Nicolas and Denelle, Pierre and Guéguen, Maya and Maire, Anthony and Maitner, Brian and McGill, Brian J. and McLean, Matthew and Mouquet, Nicolas and Munoz, François and Thuiller, Wilfried and Villéger, Sébastien and Violle, Cyrille and Auber, Arnaud},
+   title = {The dimensionality and structure of species trait spaces},
+   journal = {Ecology Letters},
+   volume = {24},
+   number = {9},
+   pages = {1988-2009},
+   ISSN = {1461-023X},
+   DOI = {https://doi.org/10.1111/ele.13778},
+   url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/ele.13778},
+   year = {2021},
+   type = {Journal Article}
+}
+
+@article{RN49,
+   author = {Mouquet, N. and Gravel, D. and Massol, F. and Calcagno, V.},
+   title = {Extending the concept of keystone species to communities and ecosystems},
+   journal = {Ecology letters},
+   volume = {16},
+   pages = {1-8},
+   year = {2013},
+   type = {Journal Article}
+}
+
+@article{RN80,
+   author = {Mouquet, N. and Lagadeuc, Y. and Devictor, V. and Doyen, L. and Duputié, A. and Eveillard, D. and Faure, D. and Garnier, E. and Gimenez, O. and Huneman, P. and Jabot, F. and Jarne, P. and Joly, D. and Julliard, R. and Kéfi, S. and Kergoat, G.J. and Lavorel, S. and Le Gall, L. and Meslin, L. and Morand, S. and Morin, X. and Morlon, H. and Pinay, G.  and Pradel, R.  and Schurr, F.M.  and Thuiller, W. and Loreau, M.},
+   title = {Predictive Ecology in a Changing World },
+   journal = {Journal of Applied Ecology},
+   volume = {52},
+   pages = {1293–1310},
+   year = {2015},
+   type = {Journal Article}
+}
+
+@article{RN45,
+   author = {Mouquet, N. and Loreau, M.},
+   title = {Community patterns in source-sink metacommunities},
+   journal = {The American Naturalist},
+   volume = {162},
+   number = {5},
+   pages = {544-557},
+   url = {<Go to ISI>://000186719000002},
+   year = {2003},
+   type = {Journal Article}
+}
+
+@article{RN1,
+   author = {Mu, Haowei and Li, Xuecao and Wen, Yanan and Huang, Jianxi and Du, Peijun and Su, Wei and Miao, Shuangxi and Geng, Mengqing},
+   title = {A global record of annual terrestrial Human Footprint dataset from 2000 to 2018},
+   journal = {Scientific Data},
+   volume = {9},
+   number = {1},
+   pages = {176},
+   ISSN = {2052-4463},
+   DOI = {10.1038/s41597-022-01284-8},
+   url = {https://doi.org/10.1038/s41597-022-01284-8},
+   year = {2022},
+   type = {Journal Article}
+}
+
+@article{RN34,
+   author = {Murgier, Juliette and McLean, Matthew and Maire, Anthony and Mouillot, David and Loiseau, Nicolas and Munoz, François and Violle, Cyrille and Auber, Arnaud},
+   title = {Rebound in functional distinctiveness following warming and reduced fishing in the North Sea},
+   journal = {Proceedings of the Royal Society B: Biological Sciences},
+   volume = {288},
+   number = {1942},
+   pages = {20201600},
+   DOI = {doi:10.1098/rspb.2020.1600},
+   url = {https://royalsocietypublishing.org/doi/abs/10.1098/rspb.2020.1600},
+   year = {2021},
+   type = {Journal Article}
+}
+
+@article{RN33,
+   author = {O'Brien, Timothy G. and Kinnaird, Margaret F.},
+   title = {Behavior, Diet, and Movements of the Sulawesi Crested Black Macaque (Macaca nigra)},
+   journal = {International Journal of Primatology},
+   volume = {18},
+   number = {3},
+   pages = {321-351},
+   ISSN = {1573-8604},
+   DOI = {10.1023/A:1026330332061},
+   url = {https://doi.org/10.1023/A:1026330332061},
+   year = {1997},
+   type = {Journal Article}
+}
+
+@article{RN20,
+   author = {Oliver, Tom H. and Heard, Matthew S. and Isaac, Nick J. B. and Roy, David B. and Procter, Deborah and Eigenbrod, Felix and Freckleton, Rob and Hector, Andy and Orme, C. David L. and Petchey, Owen L. and Proença, Vânia and Raffaelli, David and Suttle, K. Blake and Mace, Georgina M. and Martín-López, Berta and Woodcock, Ben A. and Bullock, James M.},
+   title = {Biodiversity and Resilience of Ecosystem Functions},
+   journal = {Trends in Ecology & Evolution},
+   volume = {30},
+   number = {11},
+   pages = {673-684},
+   ISSN = {0169-5347},
+   DOI = {https://doi.org/10.1016/j.tree.2015.08.009},
+   url = {https://www.sciencedirect.com/science/article/pii/S0169534715002189},
+   year = {2015},
+   type = {Journal Article}
+}
+
+@article{RN25,
+   author = {Osuri, Anand M. and Ratnam, Jayashree and Varma, Varun and Alvarez-Loayza, Patricia and Hurtado Astaiza, Johanna and Bradford, Matt and Fletcher, Christine and Ndoundou-Hockemba, Mireille and Jansen, Patrick A. and Kenfack, David and Marshall, Andrew R. and Ramesh, B. R. and Rovero, Francesco and Sankaran, Mahesh},
+   title = {Contrasting effects of defaunation on aboveground carbon storage across the global tropics},
+   journal = {Nature Communications},
+   volume = {7},
+   number = {1},
+   pages = {11351},
+   ISSN = {2041-1723},
+   DOI = {10.1038/ncomms11351},
+   url = {https://doi.org/10.1038/ncomms11351},
+   year = {2016},
+   type = {Journal Article}
+}
+
+@article{RN58,
+   author = {Pebesma, E.},
+   title = {Simple Features for R: Standardized Support for Spatial Vector Data},
+   journal = {The R Journal},
+   volume = {10},
+   pages = {439-446.},
+   year = {2018},
+   type = {Journal Article}
+}
+
+@article{RN36,
+   author = {Pigot, Alex L. and Dee, Laura E. and Richardson, Anthony J. and Cooper, Declan L. M. and Eisenhauer, Nico and Gregory, Richard D. and Lewis, Simon L. and Macgregor, Callum J. and Massimino, Dario and Maynard, Daniel S. and Phillips, Helen R. P. and Rillo, Marina and Loreau, Michel and Haegeman, Bart},
+   title = {Macroecological rules predict how biomass scales with species richness in nature},
+   journal = {Science},
+   volume = {387},
+   number = {6740},
+   pages = {1272-1276},
+   DOI = {doi:10.1126/science.adq3278},
+   url = {https://www.science.org/doi/abs/10.1126/science.adq3278},
+   year = {2025},
+   type = {Journal Article}
+}
+
+@article{RN50,
+   author = {Pigot, Alex L. and Sheard, Catherine and Miller, Eliot T. and Bregman, Tom P. and Freeman, Benjamin G. and Roll, Uri and Seddon, Nathalie and Trisos, Christopher H. and Weeks, Brian C. and Tobias, Joseph A.},
+   title = {Macroevolutionary convergence connects morphological form to ecological function in birds},
+   journal = {Nature Ecology & Evolution},
+   volume = {4},
+   number = {2},
+   pages = {230-239},
+   ISSN = {2397-334X},
+   DOI = {10.1038/s41559-019-1070-4},
+   url = {https://doi.org/10.1038/s41559-019-1070-4},
+   year = {2020},
+   type = {Journal Article}
+}
+
+@article{RN72,
+   author = {Pollock, Laura J. and O’Connor, Louise M. J. and Mokany, Karel and Rosauer, Dan F. and Talluto, Lauren and Thuiller, Wilfried},
+   title = {Protecting Biodiversity (in All Its Complexity): New Models and Methods},
+   journal = {Trends in Ecology & Evolution},
+   volume = {35},
+   number = {12},
+   pages = {1119-1128},
+   ISSN = {0169-5347},
+   DOI = {https://doi.org/10.1016/j.tree.2020.08.015},
+   url = {https://www.sciencedirect.com/science/article/pii/S0169534720302305},
+   year = {2020},
+   type = {Journal Article}
+}
+
+@article{RN68,
+   author = {Pollock, Laura J. and Thuiller, Wilfried and Jetz, Walter},
+   title = {Large conservation gains possible for global biodiversity facets},
+   journal = {Nature},
+   volume = {546},
+   number = {7656},
+   pages = {141-144},
+   ISSN = {1476-4687},
+   DOI = {10.1038/nature22368},
+   url = {https://doi.org/10.1038/nature22368},
+   year = {2017},
+   type = {Journal Article}
+}
+
+@article{RN66,
+   author = {Prima, Marie-Caroline and Renaud, Julien and Witté, Isabelle and Suarez, Léa and Rouveyrol, Paul and Fernando, Martina and Sacchi, Andrea and Cosentino, Francesca and Santini, Luca and Maiorano, Luigi and Moreira, Francisco and Dertien, Jeremy and Fernández, Néstor and Thuiller, Wilfried},
+   title = {A comprehensive framework to assess multi-species landscape connectivity},
+   journal = {Methods in Ecology and Evolution},
+   volume = {15},
+   number = {12},
+   pages = {2385-2399},
+   DOI = {https://doi.org/10.1111/2041-210X.14444},
+   url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.14444},
+   year = {2024},
+   type = {Journal Article}
+}
+
+@article{RN61,
+   author = {Ries, Leslie and Fletcher, Robert J. and Battin, James and Sisk, Thomas D.},
+   title = {Ecological Responses to Habitat Edges: Mechanisms, Models, and Variability Explained},
+   journal = {Annual Review of Ecology, Evolution, and Systematics},
+   volume = {35},
+   number = {Volume 35, 2004},
+   pages = {491-522},
+   ISSN = {1545-2069},
+   DOI = {https://doi.org/10.1146/annurev.ecolsys.35.112202.130148},
+   url = {https://www.annualreviews.org/content/journals/10.1146/annurev.ecolsys.35.112202.130148},
+   year = {2004},
+   type = {Journal Article}
+}
+
+@article{RN75,
+   author = {Rollin, Guillaume and Kortsch, Susanne and Lages, José and Gauzens, Benoit},
+   title = {Identifying important species in meta-communities},
+   journal = {Methods in Ecology and Evolution},
+   volume = {15},
+   number = {9},
+   pages = {1691-1703},
+   DOI = {https://doi.org/10.1111/2041-210X.14384},
+   url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.14384},
+   year = {2024},
+   type = {Journal Article}
+}
+
+@article{RN26,
+   author = {Ross, Srpj and Petchey, O. L. and Sasaki, T. and Armitage, D. W.},
+   title = {How to measure response diversity},
+   journal = {Methods in Ecology and Evolution},
+   volume = {14},
+   number = {5},
+   pages = {1150-1167},
+   ISSN = {2041-210X},
+   DOI = {10.1111/2041-210x.14087},
+   url = {<Go to ISI>://WOS:000953812900001},
+   year = {2023},
+   type = {Journal Article}
+}
+
+@article{RN19,
+   author = {Sosiak, Christine E. and Barden, Phillip},
+   title = {Multidimensional trait morphology predicts ecology across ant lineages},
+   journal = {Functional Ecology},
+   volume = {35},
+   number = {1},
+   pages = {139-152},
+   ISSN = {0269-8463},
+   DOI = {https://doi.org/10.1111/1365-2435.13697},
+   url = {https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/1365-2435.13697},
+   year = {2021},
+   type = {Journal Article}
+}
+
+@article{RN81,
+   author = {Steffen, W. and Rockström, J. and Richardson, K. and Lenton, T. M. and Folke, C. and Liverman, D. and Summerhayes, C. P. and Barnosky, A. D. and Cornell, S. E. and Crucifix, M. and Donges, J. F. and Fetzer, I. and Lade, S. J. and Scheffer, M. and Winkelmann, R. and Schellnhuber, H. J.},
+   title = {Trajectories of the Earth System in the Anthropocene},
+   journal = {Proceedings of the National Academy of Sciences of the United States of America},
+   volume = {115},
+   number = {33},
+   pages = {8252-8259},
+   ISSN = {0027-8424},
+   DOI = {10.1073/pnas.1810141115},
+   url = {<Go to ISI>://WOS:000441638200037},
+   year = {2018},
+   type = {Journal Article}
+}
+
+@article{RN64,
+   author = {Thuiller, Wilfried},
+   title = {Ecological niche modelling},
+   journal = {Current Biology},
+   volume = {34},
+   number = {6},
+   pages = {R225-R229},
+   ISSN = {0960-9822},
+   DOI = {10.1016/j.cub.2024.02.018},
+   url = {https://doi.org/10.1016/j.cub.2024.02.018},
+   year = {2024},
+   type = {Journal Article}
+}
+
+@article{RN57,
+   author = {Tobias, Joseph A. and Sheard, Catherine and Pigot, Alex L. and Devenish, Adam J. M. and Yang, Jingyi and Sayol, Ferran and Neate-Clegg, Montague H. C. and Alioravainen, Nico and Weeks, Thomas L. and Barber, Robert A. and Walkden, Patrick A. and MacGregor, Hannah E. A. and Jones, Samuel E. I. and Vincent, Claire and Phillips, Anna G. and Marples, Nicola M. and Montaño-Centellas, Flavia A. and Leandro-Silva, Victor and Claramunt, Santiago and Darski, Bianca and Freeman, Benjamin G. and Bregman, Tom P. and Cooney, Christopher R. and Hughes, Emma C. and Capp, Elliot J. R. and Varley, Zoë K. and Friedman, Nicholas R. and Korntheuer, Heiko and Corrales-Vargas, Andrea and Trisos, Christopher H. and Weeks, Brian C. and Hanz, Dagmar M. and Töpfer, Till and Bravo, Gustavo A. and Remeš, Vladimír and Nowak, Larissa and Carneiro, Lincoln S. and Moncada R., Amilkar J. and Matysioková, Beata and Baldassarre, Daniel T. and Martínez-Salinas, Alejandra and Wolfe, Jared D. and Chapman, Philip M. and Daly, Benjamin G. and Sorensen, Marjorie C. and Neu, Alexander and Ford, Michael A. and Mayhew, Rebekah J. and Fabio Silveira, Luis and Kelly, David J. and Annorbah, Nathaniel N. D. and Pollock, Henry S. and Grabowska-Zhang, Ada M. and McEntee, Jay P. and Carlos T. Gonzalez, Juan and Meneses, Camila G. and Muñoz, Marcia C. and Powell, Luke L. and Jamie, Gabriel A. and Matthews, Thomas J. and Johnson, Oscar and Brito, Guilherme R. R. and Zyskowski, Kristof and Crates, Ross and Harvey, Michael G. and Jurado Zevallos, Maura and Hosner, Peter A. and Bradfer-Lawrence, Tom and Maley, James M. and Stiles, F. Gary and Lima, Hevana S. and Provost, Kaiya L. and Chibesa, Moses and Mashao, Mmatjie and Howard, Jeffrey T. and Mlamba, Edson and Chua, Marcus A. H. and Li, Bicheng and Gómez, M. Isabel and García, Natalia C. and Päckert, Martin and Fuchs, Jérôme and Ali, Jarome R. and Derryberry, Elizabeth P. and Carlson, Monica L. and Urriza, Rolly C. and Brzeski, Kristin E. and Prawiradilaga, Dewi M. and Rayner, Matt J. and Miller, Eliot T. and Bowie, Rauri C. K. and Lafontaine, René-Marie and Scofield, R. Paul and Lou, Yingqiang and Somarathna, Lankani and Lepage, Denis and Illif, Marshall and Neuschulz, Eike Lena and Templin, Mathias and Dehling, D. Matthias and others },
+   title = {AVONET: morphological, ecological and geographical data for all birds},
+   journal = {Ecology Letters},
+   volume = {25},
+   number = {3},
+   pages = {581-597},
+   ISSN = {1461-023X},
+   DOI = {https://doi.org/10.1111/ele.13898},
+   url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/ele.13898},
+   year = {2022},
+   type = {Journal Article}
+}
+
+@misc{RN63,
+   url = {www.protectedplanet.net.},
+   year = {2025},
+   type = {Dataset}
+}
+
+@article{RN47,
+   author = {Urban, Dean L. and Minor, Emily S. and Treml, Eric A. and Schick, Robert S.},
+   title = {Graph models of habitat mosaics},
+   journal = {Ecology Letters},
+   volume = {12},
+   number = {3},
+   pages = {260-273},
+   ISSN = {1461-023X},
+   DOI = {https://doi.org/10.1111/j.1461-0248.2008.01271.x},
+   url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1461-0248.2008.01271.x},
+   year = {2009},
+   type = {Journal Article}
+}
+
+@article{RN43,
+   author = {Villéger, Sébastien and Grenouillet, Gaël and Brosse, Sébastien},
+   title = {Decomposing functional β-diversity reveals that low functional β-diversity is driven by low functional turnover in European fish assemblages},
+   journal = {Global Ecology and Biogeography},
+   volume = {22},
+   number = {6},
+   pages = {671-681},
+   ISSN = {1466-822X},
+   DOI = {https://doi.org/10.1111/geb.12021},
+   url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/geb.12021},
+   year = {2013},
+   type = {Journal Article}
+}
+
+@article{RN41,
+   author = {Villéger, S. and Novack-Gottshal, P. and Mouillot, D.},
+   title = {The multidimensionality of the niche reveals functional diversity changes in benthic marine biotas across geological time},
+   journal = {Ecology Letters},
+   volume = {14},
+   pages = {561-568},
+   year = {2011},
+   type = {Journal Article}
+}
+
+@article{RN55,
+   author = {Violle, Cyrille and Choler, Philippe and Borgy, Benjamin and Garnier, Eric and Amiaud, Bernard and Debarros, Guilhem and Diquelou, Sylvain and Gachet, Sophie and Jolivet, Claudy and Kattge, Jens and Lavorel, Sandra and Lemauviel-Lavenant, Servane and Loranger, Jessy and Mikolajczak, Alexis and Munoz, François and Olivier, Jean and Viovy, Nicolas},
+   title = {Vegetation ecology meets ecosystem science: Permanent grasslands as a functional biogeography case study},
+   journal = {Science of The Total Environment},
+   volume = {534},
+   pages = {43-51},
+   ISSN = {0048-9697},
+   DOI = {https://doi.org/10.1016/j.scitotenv.2015.03.141},
+   url = {https://www.sciencedirect.com/science/article/pii/S0048969715004258},
+   year = {2015},
+   type = {Journal Article}
+}
+
+@article{RN14,
+   author = {Violle, C. and Navas, M. L. and Vile, D. and Kazakou, E. and Fortunel, C. and Hummel, I. and Garnier, E.},
+   title = {Let the concept of trait be functional!},
+   journal = {Oikos},
+   volume = {116},
+   number = {5},
+   pages = {882-892},
+   ISSN = {0030-1299},
+   url = {<Go to ISI>://000245814500017 },
+   year = {2007},
+   type = {Journal Article}
+}
+
+@article{RN51,
+   author = {Violle, C. and Reich, P.B. and Pacala, S.W. and Enquist, B.J. and Kattge, J.},
+   title = {The emergence and promise of functional biogeography},
+   journal = {Proceedings of the National Academy of Sciences of the United States of America},
+   volume = {111},
+   pages = {13690-13696},
+   year = {2014},
+   type = {Journal Article}
+}
+
+@article{RN30,
+   author = {Violle, Cyrille and Thuiller, Wilfried and Mouquet, Nicolas and Munoz, Francois and Kraft, Nathan J. B. and Cadotte, Marc W. and Livingstone, Stuart W. and Mouillot, David},
+   title = {Functional Rarity: The Ecology of Outliers},
+   journal = {Trends in Ecology & Evolution},
+   volume = {32},
+   number = {5},
+   pages = {356-367},
+   ISSN = {0169-5347},
+   DOI = {10.1016/j.tree.2017.02.002},
+   url = {<Go to ISI>://WOS:000399451900011},
+   year = {2017},
+   type = {Journal Article}
+}
+
+@article{RN8,
+   author = {Waldén, Emelie and Queiroz, Cibele and Plue, Jan and Lindborg, Regina},
+   title = {Biodiversity mitigates trade-offs among species functional traits underpinning multiple ecosystem services},
+   journal = {Ecology Letters},
+   volume = {26},
+   number = {6},
+   pages = {929-941},
+   ISSN = {1461-023X},
+   DOI = {https://doi.org/10.1111/ele.14220},
+   url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/ele.14220},
+   year = {2023},
+   type = {Journal Article}
+}
+
+@article{RN6,
+   author = {Wang, Shaopeng and Loreau, Michel},
+   title = {Biodiversity and ecosystem stability across scales in metacommunities},
+   journal = {Ecology Letters},
+   volume = {19},
+   number = {5},
+   pages = {510-518},
+   ISSN = {1461-023X},
+   DOI = {https://doi.org/10.1111/ele.12582},
+   url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/ele.12582},
+   year = {2016},
+   type = {Journal Article}
+}
+
+@article{RN3,
+   author = {Yachi, S. and Loreau, M.},
+   title = {Biodiversity and ecosystem productivity in a fluctuating environment: The insurance hypothesis},
+   journal = {Proceeding of the National Academy of Science USA},
+   volume = {96},
+   pages = {1463-1468},
+   year = {1999},
+   type = {Journal Article}
+}
+
