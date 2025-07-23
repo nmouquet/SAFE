@@ -1,6 +1,7 @@
+
 library("faircitations")
 
-refs <- RefManageR::ReadBib(here::here("data","safe_lib.txt"))
+refs <- RefManageR::ReadBib(here::here("data","savedrecs.bib"))
 doi_list <- unlist(refs$"doi")
 names(doi_list) <- NULL
 cleaned_doi <- gsub("https://doi.org/", "", doi_list)
