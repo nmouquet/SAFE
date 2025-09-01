@@ -40,6 +40,7 @@
 #'    - outputs/S3_Fig_3
 #'    - outputs/S3_Fig_4
 #'    - outputs/S3_Fig_5
+#'    - outputs/S3_Fig_6
 #'
 #' @author Nicolas Mouquet, \email{nicolas.mouquet@@cnrs.fr},
 #' @date 2023/05/22 first created, major update 2024/05/10 & 2025/03/01
@@ -127,7 +128,7 @@ Insu <- function(insured, insurer, occ_list, dist_mat, D_insu, D_thr) {
 }
 #----
 
-#### Set param, Load Data & Compute functional space, Fig_5b ----
+#### Set param, Load Data & Compute functional space, Fig_5b adn S3 ----
 
 options(taxa = "birds", dispersion_max = 350000)
 
@@ -193,13 +194,53 @@ disttrait = funrar::compute_dist_matrix(
 )
 
 #pcoas<-ape::pcoa(disttrait) #long to run
-#save(pcoas,file=here::here("results","birds_pcoa_avoinet.RData"))
+save(pcoas,file=here::here("results","birds_pcoa_avoinet.RData"))
 pcoas <- get(load(file = here::here("results", "birds_pcoa_avoinet.RData")))
 
 global_Di = funrar::distinctiveness_global(disttrait)
 colnames(global_Di) <- c("Species", "global_di")
 
 hist(global_Di$global_di)
+
+#Plot PCA S3_Fig_1
+
+  # Eigenvalues
+  
+  df <- data.frame(
+    "Eigenvalues" = paste0('E', 1:8),
+    "Value" = pcoas$"values"$"Relative_eig"[1:8]
+  )
+  
+  a <- ggplot(data = df, aes(x = Eigenvalues, y = Value)) +
+    geom_bar(stat = "identity", fill = "steelblue") +
+    theme_bw()
+  
+  sum(df$Value[1:2]) #85.2% of the variance for the two first axes
+  
+  # Visualization
+  
+  pc_axes <- data.frame(pcoas$vectors)
+  colnames(pc_axes) <- gsub("\\.", "", colnames(pc_axes))
+  
+  b <- ggplot(pc_axes, aes(Axis1, Axis2)) +
+    geom_point(colour = "black") +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "red", size = 0.5) +
+    geom_vline(xintercept = 0, linetype = "dashed", color = "red", size = 0.5) +
+    xlab(paste0("PC1 (", round(df$Value[1] * 100, 1), " %)")) +
+    ylab(paste0("PC2 (", round(df$Value[2] * 100, 1), " %)")) +
+    theme_bw()
+  
+  S3_Fig_1 <- gridExtra::arrangeGrob(a, b, ncol = 2)
+  ggsave(
+    file = here::here("outputs", "S3_Fig_1.tiff"),
+    S3_Fig_1,
+    width = 20,
+    height = 10,
+    dpi = 300,
+    units = "cm",
+    device = 'tiff'
+  )
+
 
 ##plot global map
 
@@ -645,8 +686,8 @@ save(birds_insurance, file = here::here("results", "birds_insurance.RData"))
 #load
 load(here::here('results', 'birds_insurance.RData'))
 
-# look at the categories to check S3_Fig_1
-S3_Fig_1 <- ggplot(
+# look at the categories to check S3_Fig_2
+S3_Fig_2 <- ggplot(
   birds_insurance,
   aes(x = Inward, y = Outward, color = SS_status)
 ) +
@@ -664,8 +705,8 @@ S3_Fig_1 <- ggplot(
   theme(legend.position = "right")
 
 ggsave(
-  file = here::here("outputs", "S3_Fig_1.tiff"),
-  S3_Fig_1,
+  file = here::here("outputs", "S3_Fig_2.tiff"),
+  S3_Fig_2,
   width = 13,
   height = 9,
   dpi = 300,
@@ -674,13 +715,13 @@ ggsave(
 )
 
 
-# look at species richness within each categories S3_Fig_2
+# look at species richness within each categories S3_Fig_3
 birds_insurance$SS_status <- factor(
   birds_insurance$SS_status,
   levels = c("Source", "Intermediate", "Sink")
 )
 
-S3_Fig_2 <- ggplot(
+S3_Fig_3 <- ggplot(
   birds_insurance,
   aes(x = SS_status, y = Nsp_loc, fill = SS_status)
 ) +
@@ -710,8 +751,8 @@ S3_Fig_2 <- ggplot(
   )
 
 ggsave(
-  file = here::here("outputs", "S3_Fig_2.tiff"),
-  S3_Fig_2,
+  file = here::here("outputs", "S3_Fig_3.tiff"),
+  S3_Fig_3,
   width = 14,
   height = 10,
   dpi = 300,
@@ -1168,7 +1209,7 @@ jc_df$significance <- cut(
 
 #----
 
-####Latitudinal gradient S3_Fig_3----
+####Latitudinal gradient S3_Fig_4----
 
 library(RColorBrewer)
 birds_insurance$nsplog10 <- log10(birds_insurance$Nsp_loc)
@@ -1262,10 +1303,10 @@ c <- ggplot(
     linewidth = 0.5
   )
 
-S3_Fig_3 <- gridExtra::arrangeGrob(b, a, c, ncol = 3)
+S3_Fig_4 <- gridExtra::arrangeGrob(b, a, c, ncol = 3)
 ggsave(
-  file = here::here("outputs", "S3_Fig_3.tiff"),
-  S3_Fig_3,
+  file = here::here("outputs", "S3_Fig_4.tiff"),
+  S3_Fig_4,
   width = 20,
   height = 7,
   dpi = 300,
@@ -1275,7 +1316,7 @@ ggsave(
 
 #----
 
-###HI Fig_6_a, S3_Fig_4----
+###HI Fig_6_a, S3_Fig_5----
 #Data from Mu et al. 2018 https://doi.org/10.1038/s41597-022-01284-8
 library(ggplot2)
 library(terra)
@@ -1313,7 +1354,7 @@ hi_reprojected <- suppressWarnings(
 hi_resampled <- terra::resample(hi_reprojected, grd, method = "bilinear")
 mean_values <- zonal(hi_resampled, grd, fun = "mean", na.rm = TRUE)
 
-#S3_Fig_4
+#S3_Fig_5
 mean_raster <- terra::rast(grd)
 mean_raster[] <- NA_real_ # Ensure it's a numeric raster
 
@@ -1666,7 +1707,7 @@ FSA::dunnTest(
   method = "bonferroni"
 )
 
-#Fig_S3_5a,b PA I
+#Fig_S3_6a,b PA I
 #plot the % of cells which have at least 1% of their area within a PA I
 
 ThtPA <- 1
@@ -1707,7 +1748,7 @@ summary_table$SS_status <- factor(
 )
 summary_plus <- subset(summary_table, condition == "plus")
 
-Fig_S3_5a <- ggplot(
+Fig_S3_6a <- ggplot(
   summary_plus,
   aes(x = SS_status, y = percentage, fill = SS_status)
 ) +
@@ -1737,7 +1778,7 @@ Fig_S3_5a <- ggplot(
     legend.position = "none"
   )
 
-#for the cell with PA (>1%) plot the % of protection, Fig_S3_5b
+#for the cell with PA (>1%) plot the % of protection, Fig_S3_6b
 
 sub_birds_insurance_pa <- birds_insurance_hi_pa[
   birds_insurance_hi_pa$PA_I >= ThtPA,
@@ -1752,7 +1793,7 @@ box_labels$n <- box_labels$PA_I[, "n"]
 box_labels$med <- box_labels$PA_I[, "med"] + 5
 box_labels$PA_I <- NULL # Remove the matrix column
 
-Fig_S3_5b <- ggplot(
+Fig_S3_6b <- ggplot(
   sub_birds_insurance_pa,
   aes(x = SS_status, y = PA_I, fill = SS_status)
 ) +
@@ -1790,7 +1831,7 @@ FSA::dunnTest(
 )
 
 
-#Fig_S3_5c,d PA I-II
+#Fig_S3_6c,d PA I-II
 #plot the % of cells which have at least 1% of their area within a PA I-II Fig_5a
 
 ThtPA <- 1
@@ -1831,7 +1872,7 @@ summary_table$SS_status <- factor(
 )
 summary_plus <- subset(summary_table, condition == "plus")
 
-Fig_S3_5c <- ggplot(
+Fig_S3_6c <- ggplot(
   summary_plus,
   aes(x = SS_status, y = percentage, fill = SS_status)
 ) +
@@ -1876,7 +1917,7 @@ box_labels$n <- box_labels$PA_I_II[, "n"]
 box_labels$med <- box_labels$PA_I_II[, "med"] + 5
 box_labels$PA_I_II <- NULL # Remove the matrix column
 
-Fig_S3_5d <- ggplot(
+Fig_S3_6d <- ggplot(
   sub_birds_insurance_pa,
   aes(x = SS_status, y = PA_I_II, fill = SS_status)
 ) +
@@ -1916,18 +1957,18 @@ FSA::dunnTest(
 
 #save the figure
 
-S3_Fig_5 <- gridExtra::arrangeGrob(
-  Fig_S3_5a,
-  Fig_S3_5b,
-  Fig_S3_5c,
-  Fig_S3_5d,
-  Fig_S3_5e,
-  Fig_6b,
+S3_Fig_6 <- gridExtra::arrangeGrob(
+  Fig_S3_6a,
+  Fig_S3_6b,
+  Fig_S3_6c,
+  Fig_S3_6d,
+  Fig_S3_6e,
+  Fig_7b,
   ncol = 2
 )
 ggsave(
-  file = here::here("outputs", "S3_Fig_5.tiff"),
-  S3_Fig_5,
+  file = here::here("outputs", "S3_Fig_6.tiff"),
+  S3_Fig_6,
   width = 20,
   height = 22,
   dpi = 300,
