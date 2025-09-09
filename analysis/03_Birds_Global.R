@@ -64,10 +64,10 @@ Insu <- function(insured, insurer, occ_list, dist_mat, D_insu, D_thr) {
   # dist_mat <- disttrait
   # D_insu <- 0.05
   # D_thr <- 90
-
+  
   spe_insured <- occ_list[[as.character(insured)]]
   spe_insurer <- occ_list[[as.character(insurer)]]
-
+  
   #Distance and insurance
   dist_insured <- dist_mat[
     colnames(dist_mat) %in% spe_insured,
@@ -75,23 +75,23 @@ Insu <- function(insured, insurer, occ_list, dist_mat, D_insu, D_thr) {
   ]
   insured_Di = funrar::distinctiveness_global(dist_insured)
   colnames(insured_Di) <- c("Species", "Di")
-
+  
   QD <- as.numeric(quantile(insured_Di$Di, probs = seq(0, 1, 0.01))[D_thr + 1])
-
+  
   if (D_thr == 0) {
     insured_D = insured_Di$Species
   } else {
     insured_D = insured_Di$Species[insured_Di$Di >= QD]
   }
-
+  
   Insu <- do.call(
     rbind,
     lapply(insured_D, function(sp_insured) {
       #sp_insured <- insured_spe_Di80[1]
-
+      
       #is the insured sp in the insurerboring com ?
       #threshold for insurance radius
-
+      
       if (sp_insured %in% spe_insurer) {
         dist_insurer <- dist_mat[
           colnames(dist_mat) %in% spe_insurer,
@@ -105,16 +105,16 @@ Insu <- function(insured, insurer, occ_list, dist_mat, D_insu, D_thr) {
         ]
         Insurance <- sum(dist_insurer[sp_insured, ] < D_insu) - 1
       }
-
+      
       cbind.data.frame(Species = sp_insured, Insurance = Insurance)
     })
   )
-
+  
   Inward <- round(100 * sum(Insu$Insurance > 0) / nrow(Insu), 2)
-
+  
   rm(dist_insured)
   rm(Insu)
-
+  
   cbind.data.frame(
     D_insu = D_insu,
     D_thr = D_thr,
@@ -194,7 +194,7 @@ disttrait = funrar::compute_dist_matrix(
 )
 
 #pcoas<-ape::pcoa(disttrait) #long to run
-save(pcoas,file=here::here("results","birds_pcoa_avoinet.RData"))
+#save(pcoas,file=here::here("results","birds_pcoa_avoinet.RData"))
 pcoas <- get(load(file = here::here("results", "birds_pcoa_avoinet.RData")))
 
 global_Di = funrar::distinctiveness_global(disttrait)
@@ -249,7 +249,6 @@ world_map_robin(id = NA, color_s = color_s)
 if (dev.cur() != 1) dev.off()
 
 #----
-
 
 ####TWO CELLS----
 library(gridExtra)
@@ -434,10 +433,10 @@ sp_cell <- names(occ_list)
 
 set.seed(27)
 disp_max = 350000
-per_buff_all <- 1 #used to sample the neighboring cells if needed (to speed up computation)
+per_buff_all <- 0.25 #used to sample the neighboring cells if needed (to speed up computation)
 occ_list <- occ_list
 dist_mat <- disttrait
-D_insu <- median(disttrait) * 0.1
+D_insu <- median(disttrait) * 0.3
 D_thr <- 90
 
 #sp_cell <- sample(sp_cell,10000) #used to sample the cells if needed (to speed up computation)
@@ -447,9 +446,9 @@ file.create(error_log_file)
 birds_insurance <- do.call(
   rbind,
   pbmcapply::pbmclapply(
-    sp_cell,
+    sp_cell,   #sample(sp_cell,1000)
     function(focal_cell) {
-      #focal_cell=sp_cell[1]
+      #focal_cell=sample(sp_cell,1)
 
       tryCatch(
         {
@@ -567,14 +566,23 @@ birds_insurance <- do.call(
               ] = 1
             }
 
-            #means
-
+            #outputs
+            
+            Inward = mean(I_buffer$Inward[-1], na.rm = TRUE)
+            Outward = mean(I_buffer$Outward[-1], na.rm = TRUE)
+            
+            if (Outward!=Inward) {
+              Insu_index <- (Outward-Inward)/(Outward+Inward)
+            } else {
+              Insu_index <- NA
+            }
+            
             mean_one_buffer <- cbind.data.frame(
               D_insu = I_buffer$D_insu[1],
               D_thr = I_buffer$D_thr[1],
               cell_focal = I_buffer$insured[1],
-              Inward = mean(I_buffer$Inward[-1], na.rm = TRUE),
-              Outward = mean(I_buffer$Outward[-1], na.rm = TRUE),
+              Inward = Inward,
+              Outward = Outward,
               Nsp_loc = I_buffer$Div_insured[1],
               Div_distinct = I_buffer$Div_distinct[1],
               Nsp_reg = mean(I_buffer$Div_insurer[-1], na.rm = TRUE),
@@ -686,6 +694,24 @@ save(birds_insurance, file = here::here("results", "birds_insurance.RData"))
 #load
 load(here::here('results', 'birds_insurance.RData'))
 
+#Look at the Outward vs. Inward for the reviewer 2
+library(ggplot2)
+birds_insurance$Insu_index <- (birds_insurance$Outward-birds_insurance$Inward)/(birds_insurance$Outward+birds_insurance$Inward)
+rev_2 <- ggplot(birds_insurance, aes(x = Insu_index)) +
+  geom_density(fill = "steelblue", color = "black", alpha = 0.6, linewidth = 1)+
+  theme_bw()+
+  xlab("(Outward-Inward)/(Outward+Inward)")
+
+ggsave(
+  file = here::here("outputs", "rev_2.tiff"),
+  rev_2,
+  width = 13,
+  height = 9,
+  dpi = 300,
+  units = "cm",
+  device = 'tiff'
+)
+
 # look at the categories to check S3_Fig_2
 S3_Fig_2 <- ggplot(
   birds_insurance,
@@ -695,8 +721,8 @@ S3_Fig_2 <- ggplot(
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black") + # 1:1 line
   scale_color_manual(
     values = c(
-      "Source" = "#7DBD80",
-      "Sink" = "#FA6C67",
+      "Source" = "#52A153",
+      "Sink" = "#5479C9",
       "Intermediate" = "#FFF7BA"
     )
   ) + # Define colors
@@ -730,9 +756,9 @@ S3_Fig_3 <- ggplot(
   #xlab("Status")+
   scale_fill_manual(
     values = c(
-      "Source" = "#7DBD80",
-      "Intermediate" = "#FFF7BA",
-      "Sink" = "#FA6C67"
+      "Source" = "#52A153",
+      "Sink" = "#5479C9",
+      "Intermediate" = "#FFF7BA"
     )
   ) +
   theme_bw() +
@@ -806,6 +832,7 @@ Fig_5c <- ggplot(
   ) +
   ylim(0, 100) +
   xlim(0, 100)
+
 ggsave(
   file = here::here("outputs", "Fig_5c.tiff"),
   Fig_5c,
@@ -838,9 +865,10 @@ birds_insurance$SS[
     ))
 ] = 0
 
+
 if (dev.cur() != 1) dev.off()
 tiff(filename = "outputs/Fig_4a_1.tiff", width = 2000, height = 1300, res = 300)
-color_ss <- c("#FA6964", "#FFF7BA", "#57BD5C")
+color_ss <- c("#5479C9", "#FFF7BA", "#52A153")
 world_map2_robin(birds_insurance[, c("cell_focal", "SS")], color_s = color_ss)
 if (dev.cur() != 1) dev.off()
 
@@ -865,7 +893,7 @@ ex[ex$Nsp_loc > 120, ]
 
 ####Fig_5a_2 Source within a buffer----
 
-focal_cell = 61549
+focal_cell = 61548
 disp_max = 350000
 std <- TRUE
 per_buff_all <- 1
@@ -1198,14 +1226,13 @@ jc_df$significance <- cut(
 )
 
 # Joincount Expected  Variance    z-value p_value significance
-#   Source:Source              1588.6250   303.76  30.27303  233.52296       0          ***
-#   Intermediate:Intermediate 21980.5625 19442.64 118.96654  232.68369       0          ***
-#   Sink:Sink                  1675.1250   303.76  30.27303  249.24425       0          ***
-#   Intermediate:Source        2577.0625  4860.86 165.25414 -177.65663       0          ***
-#   Sink:Source                 338.3125   607.62  61.24944  -34.41101       0          ***
-#   Sink:Intermediate          2219.8125  4860.86 165.25414 -205.44711       0          ***
-#   Jtot                       5135.1875 10329.34 269.23414 -316.55533       0          ***
-#
+#   Source:Source              1618.688   303.76  30.27414  238.98240       0          ***
+#   Intermediate:Intermediate 22060.250 19442.64 118.87594  240.08110       0          ***
+#   Sink:Sink                  1684.938   303.76  30.27414  251.02306       0          ***
+#   Intermediate:Source        2468.125  4860.86 165.22035 -186.14991       0          ***
+#   Sink:Source                 375.000   607.62  61.25190  -29.72263       0          ***
+#   Sink:Intermediate          2172.500  4860.86 165.22035 -209.14894       0          ***
+#   Jtot                       5015.625 10329.34 269.17639 -323.87675       0          ***
 
 #----
 
@@ -1388,10 +1415,10 @@ Fig_6a <- ggplot(
   ylab("Human footprint") +
   scale_fill_manual(
     values = c(
-      "Source" = "#7DBD80",
+      "Source" = "#52A153",
       "Intermediate" = "#FFF7BA",
-      "Sink" = "#FA6C67"
-    )
+      "Sink" = "#5479C9"
+    ) 
   ) +
   ylim(0, 30) +
   theme_bw() +
@@ -1612,7 +1639,7 @@ summary_table$SS_status <- factor(
 )
 summary_plus <- subset(summary_table, condition == "plus")
 
-Fig_S3_5e <- ggplot(
+Fig_S3_6e <- ggplot(
   summary_plus,
   aes(x = SS_status, y = percentage, fill = SS_status)
 ) +
@@ -1628,10 +1655,10 @@ Fig_S3_5e <- ggplot(
   xlab("") +
   scale_fill_manual(
     values = c(
-      "Source" = "#7DBD80",
+      "Source" = "#52A153",
       "Intermediate" = "#FFF7BA",
-      "Sink" = "#FA6C67"
-    )
+      "Sink" = "#5479C9"
+    ) 
   ) +
   theme_bw() +
   theme(
@@ -1669,10 +1696,10 @@ Fig_6b <- ggplot(
   ylab("% of PA (I-IV) within cells") +
   scale_fill_manual(
     values = c(
-      "Source" = "#7DBD80",
+      "Source" = "#52A153",
       "Intermediate" = "#FFF7BA",
-      "Sink" = "#FA6C67"
-    )
+      "Sink" = "#5479C9"
+    ) 
   ) +
   theme_bw() +
   theme(
@@ -1764,10 +1791,10 @@ Fig_S3_6a <- ggplot(
   xlab("") +
   scale_fill_manual(
     values = c(
-      "Source" = "#7DBD80",
+      "Source" = "#52A153",
       "Intermediate" = "#FFF7BA",
-      "Sink" = "#FA6C67"
-    )
+      "Sink" = "#5479C9"
+    ) 
   ) +
   theme_bw() +
   theme(
@@ -1805,10 +1832,10 @@ Fig_S3_6b <- ggplot(
   ylab("% of PA (Ia-b) within cells") +
   scale_fill_manual(
     values = c(
-      "Source" = "#7DBD80",
+      "Source" = "#52A153",
       "Intermediate" = "#FFF7BA",
-      "Sink" = "#FA6C67"
-    )
+      "Sink" = "#5479C9"
+    ) 
   ) +
   theme_bw() +
   theme(
@@ -1888,10 +1915,10 @@ Fig_S3_6c <- ggplot(
   xlab("") +
   scale_fill_manual(
     values = c(
-      "Source" = "#7DBD80",
+      "Source" = "#52A153",
       "Intermediate" = "#FFF7BA",
-      "Sink" = "#FA6C67"
-    )
+      "Sink" = "#5479C9"
+    ) 
   ) +
   theme_bw() +
   theme(
@@ -1929,10 +1956,10 @@ Fig_S3_6d <- ggplot(
   ylab("% of PA (Ia-b, II) within cells") +
   scale_fill_manual(
     values = c(
-      "Source" = "#7DBD80",
+      "Source" = "#52A153",
       "Intermediate" = "#FFF7BA",
-      "Sink" = "#FA6C67"
-    )
+      "Sink" = "#5479C9"
+    ) 
   ) +
   theme_bw() +
   theme(
@@ -1963,7 +1990,7 @@ S3_Fig_6 <- gridExtra::arrangeGrob(
   Fig_S3_6c,
   Fig_S3_6d,
   Fig_S3_6e,
-  Fig_7b,
+  Fig_6b,
   ncol = 2
 )
 ggsave(

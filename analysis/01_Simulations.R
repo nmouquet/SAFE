@@ -6,6 +6,7 @@
 #'        - results/sim.RData dataframe of the simulation runs
 #'        - outputs/FIG_3.tiff (& legend FIG_3_legend.tiff)
 #'        - outputs/S1_Fig_1.tiff
+#'        - outputs/S1_Fig_2.tiff
 #'
 #' @author Nicolas Mouquet, \email{nicolas.mouquet@@cnrs.fr},
 #' @date 2024/04/22 first created, major update 2024/05/10
@@ -183,10 +184,10 @@ Insu <- function(insured, insurer, occ_list, dist_mat, D_insu, D_thr) {
 }
 
 Betafunk <- function(insured, insurer, occ_list, traits) {
-  # insured <- Ex[1]
-  # insurer <- Ex[2]
-  # occ_list <- occ_list
-  # traits <- traits
+  #insured <- Ex[1]
+  #insurer <- Ex[2]
+  #occ_list <- occ_list
+  #traits <- traits
 
   spe_insured <- occ_list[[insured]]
   spe_insurer <- occ_list[[insurer]]
@@ -199,6 +200,9 @@ Betafunk <- function(insured, insurer, occ_list, traits) {
   df[1, ] <- ifelse(spelist %in% spe_insured, 1, 0)
   df[2, ] <- ifelse(spelist %in% spe_insurer, 1, 0)
   rownames(df) <- c("A", "B")
+  
+  beta.obj <- betapart::betapart.core(df)
+  beta.pair <- betapart::beta.pair(beta.obj,index.family = "jaccard")
 
   traits.sub <- traits[rownames(traits) %in% colnames(df), ]
   #traits.sub <- traits.sub[order(rownames(traits.sub)),-1]
@@ -220,6 +224,9 @@ Betafunk <- function(insured, insurer, occ_list, traits) {
   cbind.data.frame(
     insured = insured,
     insurer = insurer,
+    beta.jac=as.numeric(beta.pair$beta.jac),
+    beta.jtu=as.numeric(beta.pair$beta.jtu),
+    beta.jne=as.numeric(beta.pair$beta.jne),
     funct.beta.jac = as.numeric(test.pair_funk$funct.beta.jac),
     funct.beta.jne = as.numeric(test.pair_funk$funct.beta.jne),
     funct.beta.jtu = as.numeric(test.pair_funk$funct.beta.jtu)
@@ -426,7 +433,7 @@ sim <- do.call(
 
 save(sim, file = (here::here('results', 'sim.RData')))
 
-#Figure final
+#FIG_3
 library(ggplot2)
 library(RColorBrewer)
 library(gridExtra)
@@ -632,7 +639,7 @@ b <- ggplot(
   theme(legend.position = "none") +
   geom_smooth(method = lm, color = "#999999") +
   geom_text(
-    x = 0.2,
+    x = 0,
     y = 97,
     label = paste0(
       " r= ",
@@ -790,4 +797,211 @@ ggsave(
   device = 'tiff'
 )
 
+#S1_Fig_2
+
+a <- ggplot(
+  distinct_sim_90,
+  aes(x = beta.jac, y = Inward_D, color = Div_insured)
+) +
+  geom_point(alpha = 0.7) +
+  geom_density_2d(color = "black", alpha = 0.2, size = 0.3) +
+  ylim(0, 100) +
+  ylab("Distinct Inward (%)") +
+  xlab("beta.jac") +
+  scale_colour_gradientn(colours = rev(brewer.pal(n = 8, name = "RdBu"))) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_smooth(method = lm, color = "#999999") +
+  geom_text(
+    x = 0.94,
+    y = 97,
+    label = paste0(
+      " r= ",
+      round(
+        cor(
+          distinct_sim_90$beta.jac,
+          distinct_sim_90$Inward_D,
+          use = "pairwise.complete.obs"
+        ),
+        2
+      )
+    ),
+    color = '#999999',
+    hjust = 0,
+    size = 3.5
+  )
+
+b <- ggplot(
+  distinct_sim_90,
+  aes(x = beta.jne, y = Inward_D, color = Div_insured)
+) +
+  geom_point(alpha = 0.7) +
+  geom_density_2d(color = "black", alpha = 0.2, size = 0.3) +
+  ylim(0, 100) +
+  ylab("Distinct Inward (%)") +
+  xlab("beta.jne") +
+  scale_colour_gradientn(colours = rev(brewer.pal(n = 8, name = "RdBu"))) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_smooth(method = lm, color = "#999999") +
+  geom_text(
+    x = 0.11,
+    y = 3,
+    label = paste0(
+      " r= ",
+      round(
+        cor(
+          distinct_sim_90$beta.jne,
+          distinct_sim_90$Inward_D,
+          use = "pairwise.complete.obs"
+        ),
+        2
+      )
+    ),
+    color = '#999999',
+    hjust = 0,
+    size = 3.5
+  )
+
+c <- ggplot(
+  distinct_sim_90,
+  aes(x = beta.jtu, y = Inward_D, color = Div_insured)
+) +
+  geom_point(alpha = 0.7) +
+  geom_density_2d(color = "black", alpha = 0.2, size = 0.3) +
+  ylim(0, 100) +
+  ylab("Distinct Inward (%)") +
+  xlab("beta.jtu") +
+  scale_colour_gradientn(colours = rev(brewer.pal(n = 8, name = "RdBu"))) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_smooth(method = lm, color = "#999999") +
+  geom_text(
+    x = 0.84,
+    y = 3,
+    label = paste0(
+      " r= ",
+      round(
+        cor(
+          distinct_sim_90$beta.jtu,
+          distinct_sim_90$Inward_D,
+          use = "pairwise.complete.obs"
+        ),
+        2
+      )
+    ),
+    color = '#999999',
+    hjust = 0,
+    size = 3.5
+  )
+
+
+d <- ggplot(
+  distinct_sim_90,
+  aes(x = beta.jac, y = Inward_C, color = Div_insured)
+) +
+  geom_point(alpha = 0.7) +
+  geom_density_2d(color = "black", alpha = 0.2, size = 0.3) +
+  ylim(0, 100) +
+  ylab("Common Inward (%)") +
+  xlab("beta.jac") +
+  scale_colour_gradientn(colours = rev(brewer.pal(n = 8, name = "RdBu"))) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_smooth(method = lm, color = "#999999") +
+  geom_text(
+    x = 0.94,
+    y = 3,
+    label = paste0(
+      " r= ",
+      round(
+        cor(
+          distinct_sim_90$beta.jac,
+          distinct_sim_90$Inward_C,
+          use = "pairwise.complete.obs"
+        ),
+        2
+      )
+    ),
+    color = '#999999',
+    hjust = 0,
+    size = 3.5
+  )
+
+e <- ggplot(
+  distinct_sim_90,
+  aes(x = beta.jne, y = Inward_C, color = Div_insured)
+) +
+  geom_point(alpha = 0.7) +
+  geom_density_2d(color = "black", alpha = 0.2, size = 0.3) +
+  ylim(0, 100) +
+  ylab("Common Inward (%)") +
+  xlab("beta.jne") +
+  scale_colour_gradientn(colours = rev(brewer.pal(n = 8, name = "RdBu"))) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_smooth(method = lm, color = "#999999") +
+  geom_text(
+    x = 0.11,
+    y = 3,
+    label = paste0(
+      " r= ",
+      round(
+        cor(
+          distinct_sim_90$beta.jne,
+          distinct_sim_90$Inward_C,
+          use = "pairwise.complete.obs"
+        ),
+        2
+      )
+    ),
+    color = '#999999',
+    hjust = 0,
+    size = 3.5
+  )
+
+f <- ggplot(
+  distinct_sim_90,
+  aes(x = beta.jtu, y = Inward_C, color = Div_insured)
+) +
+  geom_point(alpha = 0.7) +
+  geom_density_2d(color = "black", alpha = 0.2, size = 0.3) +
+  ylim(0, 100) +
+  ylab("Common Inward (%)") +
+  xlab("beta.jtu") +
+  scale_colour_gradientn(colours = rev(brewer.pal(n = 8, name = "RdBu"))) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_smooth(method = lm, color = "#999999") +
+  geom_text(
+    x = 0.84,
+    y = 3,
+    label = paste0(
+      " r= ",
+      round(
+        cor(
+          distinct_sim_90$beta.jtu,
+          distinct_sim_90$Inward_C,
+          use = "pairwise.complete.obs"
+        ),
+        2
+      )
+    ),
+    color = '#999999',
+    hjust = 0,
+    size = 3.5
+  )
+
+S1_Fig_2 <- gridExtra::arrangeGrob(a, b, c, d, e, f, ncol = 3)
+ggsave(
+  file = here::here("outputs", "S1_Fig_2.tiff"),
+  S1_Fig_2,
+  width = 20,
+  height = 12,
+  dpi = 300,
+  units = "cm",
+  device = 'tiff'
+)
+
 #----
+

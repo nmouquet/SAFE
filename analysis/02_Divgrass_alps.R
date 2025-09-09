@@ -21,6 +21,8 @@
 #'      - results/divgrass_insurance.RData: insurance for all the plots in the alps
 #'      - outputs/S2_Fig_1.tiff
 #'      - outputs/S2_Fig_2.tiff
+#'      - outputs/S2_Fig_3.tiff
+#'      - outputs/S2_Fig_4.tiff
 #'      - outputs/Fig_4b_left.tiff
 #'      - outputs/Fig_4c.tiff
 #'      - outputs/Fig_4d.tiff
@@ -65,6 +67,7 @@ Insu <- function(insured, insurer, occ_list, dist_mat, D_insu, D_thr) {
     insured_D = insured_Di$Species
   } else {
     insured_D = insured_Di$Species[insured_Di$Di >= QD]
+    insured_C = insured_Di$Species[insured_Di$Di < QD]
   }
 
   Insu <- do.call(
@@ -92,12 +95,41 @@ Insu <- function(insured, insurer, occ_list, dist_mat, D_insu, D_thr) {
       cbind.data.frame(Species = sp_insured, Insurance = Insurance)
     })
   )
+  
+  Insu_C <- do.call(
+    rbind,
+    lapply(insured_C, function(sp_insured) {
+      #sp_insured <- insured_D[1]
+      
+      #is the distinct species from the focal community is insured in the neighboring com ?
+      #threshold for insurance radius
+      
+      if (sp_insured %in% spe_insurer) {
+        dist_insurer <- dist_mat[
+          colnames(dist_mat) %in% spe_insurer,
+          rownames(dist_mat) %in% spe_insurer
+        ]
+        Insurance <- sum(dist_insurer[sp_insured, ] < D_insu)
+      } else {
+        dist_insurer <- dist_mat[
+          colnames(dist_mat) %in% c(spe_insurer, sp_insured),
+          rownames(dist_mat) %in% c(spe_insurer, sp_insured)
+        ]
+        Insurance <- sum(dist_insurer[sp_insured, ] < D_insu) - 1
+      }
+      
+      cbind.data.frame(Species = sp_insured, Insurance = Insurance)
+    })
+  )
 
   Inward <- round(100 * sum(Insu$Insurance > 0) / nrow(Insu), 2)
 
   spnotinsu = paste0(Insu$Species[Insu$Insurance == 0], collapse = ",")
   spinsu = paste0(Insu$Species[Insu$Insurance > 0], collapse = ",")
-
+  
+  insu_D <- (sum(Insu$Insurance > 0)/length(insured_D))*100
+  insu_C <- (sum(Insu_C$Insurance > 0)/length(insured_C))*100
+    
   rm(dist_insured)
   rm(Insu)
 
@@ -111,7 +143,9 @@ Insu <- function(insured, insurer, occ_list, dist_mat, D_insu, D_thr) {
     Inward = Inward,
     Div_distinct = length(insured_D),
     spnotinsu = spnotinsu,
-    spinsu = spinsu
+    spinsu = spinsu,
+    insu_D=insu_D,
+    insu_C=insu_C
   )
 }
 
@@ -309,8 +343,8 @@ alpine_buffer <- merge(
 save(alpine_buffer, file = here::here("results", "alpine_buffer.Rdata"))
 
 #Load
-load(file = here::here("results", "alpine_buffer.Rdata"))
-load(file = here::here("results", "alpine_within_radius.Rdata"))
+alpine_buffer <- get(load(file = here::here("results", "alpine_buffer.Rdata")))
+alpine_within_radius <- get(load(file = here::here("results", "alpine_within_radius.Rdata")))
 
 #Map example
 # Select a point
@@ -322,7 +356,7 @@ reference_point <- Div_grass_french_alps[id, ]
 neighbors <- Div_grass_french_alps[alpine_within_radius[[id]], ]
 
 # Create the buffer
-buffer_Xkm <- sf::st_buffer(reference_point, dist = 5000)
+buffer_Xkm <- sf::st_buffer(reference_point, dist = 3000)
 buffer_Xkm_wgs84 <- sf::st_transform(buffer_Xkm, crs = 4326)
 
 #map
@@ -417,7 +451,7 @@ save(
 global_Di = funrar::distinctiveness_global(disttrait_divgrass)
 colnames(global_Di) <- c("Species", "global_di")
 
-pcoas_divgrass <- ape::pcoa(disttrait_divgrass) #long to run
+pcoas_divgrass <- ape::pcoa(disttrait_divgrass)
 save(pcoas_divgrass, file = here::here("results", "pcoas_divgrass.Rdata"))
 
 #load
@@ -461,20 +495,20 @@ ggsave(
 
 #----
 
-####LOOP OVER MANY CELLS WITH BUFFERS, Fig_4b,d----
+####LOOP OVER MANY CELLS WITH BUFFERS, Fig_4b,d, S2_Fig_3----
 
 sp_cell <- names(all_com_divgrass)
 per_buff_all <- 1
 occ_list <- all_com_divgrass
 dist_mat <- disttrait_divgrass
-D_insu <- median(disttrait_divgrass) * 0.3
+D_insu <- median(disttrait_divgrass) * 0.2
 D_thr <- 90
 set.seed(1)
 
-load(file = here::here("results", "alpine_buffer.Rdata"))
+alpine_buffer <- get(load(file = here::here("results", "alpine_buffer.Rdata")))
 
 #Compute insurance
-#long to run
+#long to run (10 min)
 divgrass_insurance <- do.call(
   rbind,
   pbmcapply::pbmclapply(
@@ -518,7 +552,7 @@ divgrass_insurance <- do.call(
         })),
       ]
 
-      #Compute insurance when there is more than 5 species in the focal cell
+      #Compute insurance for distinct species when there is more than 5 species in the focal cell
       if ((length(sp_focal) >= 5) & (nrow(buffer_cell_used) > 2)) {
         I_buffer <- do.call(
           rbind,
@@ -589,7 +623,10 @@ divgrass_insurance <- do.call(
           Nsp_reg = mean(I_buffer$Div_insurer[-1], na.rm = TRUE),
           gamma = length(all_species),
           nbuffer = nrow(buffer_cell_used),
-          sp_notinsu = sp_notinsu
+          sp_notinsu = sp_notinsu,
+          insu_D=mean(I_buffer$insu_D[-1]),
+          insu_C=mean(I_buffer$insu_C[-1])
+          
         )
 
         mean_one_buffer
@@ -603,6 +640,56 @@ divgrass_insurance <- do.call(
 
 mean(divgrass_insurance$nbuffer)
 sd(divgrass_insurance$nbuffer)
+
+#Plot the insurance of common vs. distinct species 
+
+df_long <- data.frame(
+  species = rep(c("Distinct", "Common"), each = nrow(divgrass_insurance)),
+  insu = c(divgrass_insurance$insu_D, divgrass_insurance$insu_C)
+)
+
+S2_Fig_X <- ggplot(
+  df_long,
+  aes(x = species, y = insu, fill = species)
+) +
+  geom_boxplot(outlier.shape = NA) +
+  # Add count labels
+  # geom_text(data = box_labels,
+  #           aes(x = SS_status, y = med, label = paste0("n=", n)),
+  #           inherit.aes = FALSE, size = 4, color = "black")+
+  ylab("Inward insurance (%)") +
+  scale_fill_manual(
+    values = c(
+      "Distinct" = "#90DB9B",
+      "Common" = "#D6D6D6"
+    )
+  ) +
+  ylim(0, 70) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none"
+  )
+
+ggsave(
+  file = here::here("outputs", "S2_Fig_X.tiff"),
+  S2_Fig_X,
+  width = 10,
+  height = 8,
+  dpi = 300,
+  units = "cm",
+  device = 'tiff'
+)
+
+kruskal.test(insu ~ species, data = df_long)
+FSA::dunnTest(
+  df_long$insu ~ df_long$species,
+  method = "bonferroni"
+)
+
 
 #Add env values (finally will not be used)
 rownames(divgrass_insurance) <- divgrass_insurance$cell_focal
@@ -655,7 +742,7 @@ max(divgrass_insurance$Div_distinct)
 #Save
 save(
   divgrass_insurance,
-  file = here::here("results", "divgrass_insurance.RData")
+  file = here::here("results", "divgrass_insurance_R03.RData")
 )
 
 #Load
@@ -731,7 +818,7 @@ divgrass_insurance$Category <- factor(
 
 # Define custom colors for the 3 categories
 category_palette <- c(
-  "Sink" = "#FA6C67",
+  "Sink" = "#5479C9",
   "Intermediate" = "#FFF7BA",
   "Source" = "#52A153"
 )
@@ -788,7 +875,7 @@ filtered_divgrass_insurance$Category <- factor(
   filtered_divgrass_insurance$Category,
   levels = c("Source", "Sink")
 )
-category_palette <- c("Sink" = "#FA6C67", "Source" = "#52A153")
+category_palette <- c("Sink" = "#5479C9", "Source" = "#52A153")
 
 tmap::tmap_mode("view") # Mode interactif (ou "plot" pour un affichage statique)
 tmap::tm_shape(filtered_divgrass_insurance) +
@@ -798,6 +885,24 @@ tmap::tm_shape(filtered_divgrass_insurance) +
     size = 0.5
   ) +
   tmap::tm_layout(legend.show = FALSE)
+
+# library(tmap)
+# tmap::tmap_mode("plot")
+# map <- tm_shape(filtered_divgrass_insurance) +
+#   tm_symbols(
+#     col = "Category",
+#     palette = category_palette,  # Replace with turbo(8) or your palette
+#     size = 0.5
+#   ) +
+#   tm_layout(legend.show = FALSE)
+# 
+# tmap_save(
+#   tm = map,
+#   filename = here::here("outputs", "map_output.tiff"),
+#   dpi = 300,           # Resolution
+#   width = 10,           # Width in inches
+#   height = 8           # Height in inches
+# )
 
 #Box plot categories Fig4bleft
 
@@ -817,7 +922,7 @@ Fig_4b_left <- ggplot(
     values = c(
       "Source" = "#7DBD80",
       "Intermediate" = "#FFF7BA",
-      "Sink" = "#FA6C67"
+      "Sink" = "#5479C9"
     )
   ) +
   theme_bw() +
@@ -1198,3 +1303,630 @@ jc_df$significance <- cut(
 print(jc_df)
 
 #end----
+
+####SENSITIVITY ANALYSIS----
+color_s <- rev(RColorBrewer::brewer.pal(n = 8, name = "RdBu"))
+
+#Functional Radius S2_Fig_3
+
+Insu_R01 <-get(load(here::here('results','divgrass_insurance_R01.RData')))
+Insu_R02 <-get(load(here::here('results','divgrass_insurance.RData')))
+Insu_R04 <-get(load(here::here('results','divgrass_insurance_R04.RData')))
+
+Insu_R01$Category <- factor(
+  Insu_R01$Category,
+  levels = c("Source", "Intermediate", "Sink")
+)
+
+Insu_R02$Category <- factor(
+  Insu_R02$Category,
+  levels = c("Source", "Intermediate", "Sink")
+)
+
+Insu_R04$Category <- factor(
+  Insu_R04$Category,
+  levels = c("Source", "Intermediate", "Sink")
+)
+
+
+library(ggplot2)
+library(RColorBrewer)
+
+all_cells_R01 <- Insu_R01[
+  order(Insu_R01$Nsp_loc, decreasing = F),
+]
+all_cells_R01 <- all_cells_R01[
+  sample(1:nrow(all_cells_R01), nrow(all_cells_R01)),
+]
+all_cells_R01$log10_Nsp_loc = log10(all_cells_R01$Nsp_loc)
+
+all_cells_R02 <- Insu_R02[
+  order(Insu_R02$Nsp_loc, decreasing = F),
+]
+all_cells_R02 <- all_cells_R02[
+  sample(1:nrow(all_cells_R02), nrow(all_cells_R02)),
+]
+all_cells_R02$log10_Nsp_loc = log10(all_cells_R02$Nsp_loc)
+
+all_cells_R04 <- Insu_R04[
+  order(Insu_R04$Nsp_loc, decreasing = F),
+]
+all_cells_R04 <- all_cells_R04[
+  sample(1:nrow(all_cells_R04), nrow(all_cells_R04)),
+]
+all_cells_R04$log10_Nsp_loc = log10(all_cells_R04$Nsp_loc)
+
+
+S2_Fig_3a <- ggplot(
+  Insu_R01,
+  aes(x = Category, y = Nsp_loc, fill = Category)
+) +
+  geom_boxplot(width = .5, outlier.shape = NA) +
+  ylab("Species richness") +
+  #xlab("Status")+
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    )
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 10),
+    axis.title.y = element_text(size = 14),
+    legend.position = "none"
+  ) +
+  ylim(0, 50) +
+  scale_x_discrete(labels = c("Source", "Intermediate", "Sink")) +
+  ggplot2::theme(
+    axis.line.x = ggplot2::element_line(linetype = "blank"),
+    axis.ticks.x = ggplot2::element_blank()
+  )
+
+S2_Fig_3b <- ggplot(
+  Insu_R02,
+  aes(x = Category, y = Nsp_loc, fill = Category)
+) +
+  geom_boxplot(width = .5, outlier.shape = NA) +
+  ylab("Species richness") +
+  #xlab("Status")+
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    )
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 10),
+    axis.title.y = element_text(size = 14),
+    legend.position = "none"
+  ) +
+  ylim(0, 50) +
+  scale_x_discrete(labels = c("Source", "Intermediate", "Sink")) +
+  ggplot2::theme(
+    axis.line.x = ggplot2::element_line(linetype = "blank"),
+    axis.ticks.x = ggplot2::element_blank()
+  )
+
+S2_Fig_3c <- ggplot(
+  Insu_R04,
+  aes(x = Category, y = Nsp_loc, fill = Category)
+) +
+  geom_boxplot(width = .5, outlier.shape = NA) +
+  ylab("Species richness") +
+  #xlab("Status")+
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    )
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 10),
+    axis.title.y = element_text(size = 14),
+    legend.position = "none"
+  ) +
+  ylim(0, 50) +
+  scale_x_discrete(labels = c("Source", "Intermediate", "Sink")) +
+  ggplot2::theme(
+    axis.line.x = ggplot2::element_line(linetype = "blank"),
+    axis.ticks.x = ggplot2::element_blank()
+  )
+
+
+S2_Fig_3d <- ggplot(
+  all_cells_R01,
+  aes(x = Inward, y = Outward, color = log10_Nsp_loc)
+) +
+  geom_point(alpha = 0.8) +
+  ylab("Outward insurance") +
+  xlab("Inward insurance") +
+  scale_colour_gradientn(colours = color_s) +
+  #scale_colour_gradientn(colours = brewer.pal(n = 8, name = "YlOrRd"))+
+  theme_bw() +
+  theme(
+    legend.position = "none",
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 10)
+  ) +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      all_cells_R01$Outward - all_cells_R01$Inward,
+      prob = 0.8,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      all_cells_R01$Outward - all_cells_R01$Inward,
+      prob = 0.2,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  ylim(0, 100) +
+  xlim(0, 100)
+
+S2_Fig_3e <- ggplot(
+  all_cells_R02,
+  aes(x = Inward, y = Outward, color = log10_Nsp_loc)
+) +
+  geom_point(alpha = 0.8) +
+  ylab("Outward insurance") +
+  xlab("Inward insurance") +
+  scale_colour_gradientn(colours = color_s) +
+  #scale_colour_gradientn(colours = brewer.pal(n = 8, name = "YlOrRd"))+
+  theme_bw() +
+  theme(
+    legend.position = "none",
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 10)
+  ) +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      all_cells_R02$Outward - all_cells_R02$Inward,
+      prob = 0.8,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      all_cells_R02$Outward - all_cells_R02$Inward,
+      prob = 0.2,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  ylim(0, 100) +
+  xlim(0, 100)
+
+S2_Fig_3f <- ggplot(
+  all_cells_R04,
+  aes(x = Inward, y = Outward, color = log10_Nsp_loc)
+) +
+  geom_point(alpha = 0.8) +
+  ylab("Outward insurance") +
+  xlab("Inward insurance") +
+  scale_colour_gradientn(colours = color_s) +
+  #scale_colour_gradientn(colours = brewer.pal(n = 8, name = "YlOrRd"))+
+  theme_bw() +
+  theme(
+    legend.position = "none",
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 10)
+  ) +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      all_cells_R04$Outward - all_cells_R04$Inward,
+      prob = 0.8,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      all_cells_R04$Outward - all_cells_R04$Inward,
+      prob = 0.2,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  ylim(0, 100) +
+  xlim(0, 100)
+
+S2_Fig_3 <- gridExtra::arrangeGrob(S2_Fig_3a, S2_Fig_3b, S2_Fig_3c,
+                                   S2_Fig_3d, S2_Fig_3e, S2_Fig_3f, ncol = 3)
+ggsave(
+  file = here::here("outputs", "S2_Fig_3.tiff"),
+  S2_Fig_3,
+  width = 23,
+  height = 14,
+  dpi = 300,
+  units = "cm",
+  device = 'tiff'
+)
+
+#Functional radius Spatial autocorelation
+
+  #R01
+    coords <- sf::st_coordinates(Insu_R01)
+    nb <- spdep::knn2nb(spdep::knearneigh(coords, k = 8))
+    lw <- spdep::nb2listw(nb, style = "W")
+    join_count_results <- spdep::joincount.multi(Insu_R01$Category, lw)
+    jc_df <- as.data.frame(join_count_results)
+    jc_df$`z-value` <- as.numeric(jc_df$`z-value`)
+    jc_df$p_value <- 2 * (1 - pnorm(abs(jc_df$`z-value`)))
+    jc_df$significance <- cut(
+      jc_df$p_value,
+      breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
+      labels = c("***", "**", "*", "ns")
+    )
+    print(jc_df)
+    
+  #RO2
+    coords <- sf::st_coordinates(Insu_R02)
+    nb <- spdep::knn2nb(spdep::knearneigh(coords, k = 8))
+    lw <- spdep::nb2listw(nb, style = "W")
+    join_count_results <- spdep::joincount.multi(Insu_R02$Category, lw)
+    jc_df <- as.data.frame(join_count_results)
+    jc_df$`z-value` <- as.numeric(jc_df$`z-value`)
+    jc_df$p_value <- 2 * (1 - pnorm(abs(jc_df$`z-value`)))
+    jc_df$significance <- cut(
+      jc_df$p_value,
+      breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
+      labels = c("***", "**", "*", "ns")
+    )
+    print(jc_df)
+    
+  #RO4
+    coords <- sf::st_coordinates(Insu_R04)
+    nb <- spdep::knn2nb(spdep::knearneigh(coords, k = 8))
+    lw <- spdep::nb2listw(nb, style = "W")
+    join_count_results <- spdep::joincount.multi(Insu_R04$Category, lw)
+    jc_df <- as.data.frame(join_count_results)
+    jc_df$`z-value` <- as.numeric(jc_df$`z-value`)
+    jc_df$p_value <- 2 * (1 - pnorm(abs(jc_df$`z-value`)))
+    jc_df$significance <- cut(
+      jc_df$p_value,
+      breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
+      labels = c("***", "**", "*", "ns")
+    )
+    print(jc_df)
+
+#Buffer Radius S2_Fig_4
+    
+    Insu_B01 <-get(load(here::here('results','divgrass_insurance_B1000.RData')))
+    Insu_B02 <-get(load(here::here('results','divgrass_insurance_B2000.RData')))
+    Insu_B03 <-get(load(here::here('results','divgrass_insurance.RData')))
+    
+    Insu_B01$Category <- factor(
+      Insu_B01$Category,
+      levels = c("Source", "Intermediate", "Sink")
+    )
+    
+    Insu_B02$Category <- factor(
+      Insu_B02$Category,
+      levels = c("Source", "Intermediate", "Sink")
+    )
+    
+    Insu_B03$Category <- factor(
+      Insu_B03$Category,
+      levels = c("Source", "Intermediate", "Sink")
+    )
+    
+    
+    library(ggplot2)
+    library(RColorBrewer)
+    
+    all_cells_B01 <- Insu_B01[
+      order(Insu_B01$Nsp_loc, decreasing = F),
+    ]
+    all_cells_B01 <- all_cells_B01[
+      sample(1:nrow(all_cells_B01), nrow(all_cells_B01)),
+    ]
+    all_cells_B01$log10_Nsp_loc = log10(all_cells_B01$Nsp_loc)
+    
+    all_cells_B02 <- Insu_B02[
+      order(Insu_B02$Nsp_loc, decreasing = F),
+    ]
+    all_cells_B02 <- all_cells_B02[
+      sample(1:nrow(all_cells_B02), nrow(all_cells_B02)),
+    ]
+    all_cells_B02$log10_Nsp_loc = log10(all_cells_B02$Nsp_loc)
+    
+    all_cells_B03 <- Insu_B03[
+      order(Insu_B03$Nsp_loc, decreasing = F),
+    ]
+    all_cells_B03 <- all_cells_B03[
+      sample(1:nrow(all_cells_B03), nrow(all_cells_B03)),
+    ]
+    all_cells_B03$log10_Nsp_loc = log10(all_cells_B03$Nsp_loc)
+    
+    
+    S2_Fig_4a <- ggplot(
+      Insu_B01,
+      aes(x = Category, y = Nsp_loc, fill = Category)
+    ) +
+      geom_boxplot(width = .5, outlier.shape = NA) +
+      ylab("Species richness") +
+      #xlab("Status")+
+      scale_fill_manual(
+        values = c(
+          "Source" = "#7DBD80",
+          "Intermediate" = "#FFF7BA",
+          "Sink" = "#5479C9"
+        )
+      ) +
+      theme_bw() +
+      theme(
+        axis.text.x = element_text(size = 12),
+        axis.title.x = element_blank(),
+        axis.text.y = element_text(size = 10),
+        axis.title.y = element_text(size = 14),
+        legend.position = "none"
+      ) +
+      ylim(0, 50) +
+      scale_x_discrete(labels = c("Source", "Intermediate", "Sink")) +
+      ggplot2::theme(
+        axis.line.x = ggplot2::element_line(linetype = "blank"),
+        axis.ticks.x = ggplot2::element_blank()
+      )
+    
+    S2_Fig_4b <- ggplot(
+      Insu_B02,
+      aes(x = Category, y = Nsp_loc, fill = Category)
+    ) +
+      geom_boxplot(width = .5, outlier.shape = NA) +
+      ylab("Species richness") +
+      #xlab("Status")+
+      scale_fill_manual(
+        values = c(
+          "Source" = "#7DBD80",
+          "Intermediate" = "#FFF7BA",
+          "Sink" = "#5479C9"
+        )
+      ) +
+      theme_bw() +
+      theme(
+        axis.text.x = element_text(size = 12),
+        axis.title.x = element_blank(),
+        axis.text.y = element_text(size = 10),
+        axis.title.y = element_text(size = 14),
+        legend.position = "none"
+      ) +
+      ylim(0, 50) +
+      scale_x_discrete(labels = c("Source", "Intermediate", "Sink")) +
+      ggplot2::theme(
+        axis.line.x = ggplot2::element_line(linetype = "blank"),
+        axis.ticks.x = ggplot2::element_blank()
+      )
+    
+    S2_Fig_4c <- ggplot(
+      Insu_B03,
+      aes(x = Category, y = Nsp_loc, fill = Category)
+    ) +
+      geom_boxplot(width = .5, outlier.shape = NA) +
+      ylab("Species richness") +
+      #xlab("Status")+
+      scale_fill_manual(
+        values = c(
+          "Source" = "#7DBD80",
+          "Intermediate" = "#FFF7BA",
+          "Sink" = "#5479C9"
+        )
+      ) +
+      theme_bw() +
+      theme(
+        axis.text.x = element_text(size = 12),
+        axis.title.x = element_blank(),
+        axis.text.y = element_text(size = 10),
+        axis.title.y = element_text(size = 14),
+        legend.position = "none"
+      ) +
+      ylim(0, 50) +
+      scale_x_discrete(labels = c("Source", "Intermediate", "Sink")) +
+      ggplot2::theme(
+        axis.line.x = ggplot2::element_line(linetype = "blank"),
+        axis.ticks.x = ggplot2::element_blank()
+      )
+    
+    
+    S2_Fig_4d <- ggplot(
+      all_cells_B01,
+      aes(x = Inward, y = Outward, color = log10_Nsp_loc)
+    ) +
+      geom_point(alpha = 0.8) +
+      ylab("Outward insurance") +
+      xlab("Inward insurance") +
+      scale_colour_gradientn(colours = color_s) +
+      #scale_colour_gradientn(colours = brewer.pal(n = 8, name = "YlOrRd"))+
+      theme_bw() +
+      theme(
+        legend.position = "none",
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 10)
+      ) +
+      geom_abline(
+        slope = 1,
+        intercept = as.numeric(quantile(
+          all_cells_B01$Outward - all_cells_B01$Inward,
+          prob = 0.8,
+          na.rm = T
+        )),
+        linetype = "dashed",
+        size = 0.5
+      ) +
+      geom_abline(
+        slope = 1,
+        intercept = as.numeric(quantile(
+          all_cells_B01$Outward - all_cells_B01$Inward,
+          prob = 0.2,
+          na.rm = T
+        )),
+        linetype = "dashed",
+        size = 0.5
+      ) +
+      ylim(0, 100) +
+      xlim(0, 100)
+    
+    S2_Fig_4e <- ggplot(
+      all_cells_B02,
+      aes(x = Inward, y = Outward, color = log10_Nsp_loc)
+    ) +
+      geom_point(alpha = 0.8) +
+      ylab("Outward insurance") +
+      xlab("Inward insurance") +
+      scale_colour_gradientn(colours = color_s) +
+      #scale_colour_gradientn(colours = brewer.pal(n = 8, name = "YlOrRd"))+
+      theme_bw() +
+      theme(
+        legend.position = "none",
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 10)
+      ) +
+      geom_abline(
+        slope = 1,
+        intercept = as.numeric(quantile(
+          all_cells_B02$Outward - all_cells_B02$Inward,
+          prob = 0.8,
+          na.rm = T
+        )),
+        linetype = "dashed",
+        size = 0.5
+      ) +
+      geom_abline(
+        slope = 1,
+        intercept = as.numeric(quantile(
+          all_cells_B02$Outward - all_cells_B02$Inward,
+          prob = 0.2,
+          na.rm = T
+        )),
+        linetype = "dashed",
+        size = 0.5
+      ) +
+      ylim(0, 100) +
+      xlim(0, 100)
+    
+    S2_Fig_4f <- ggplot(
+      all_cells_B03,
+      aes(x = Inward, y = Outward, color = log10_Nsp_loc)
+    ) +
+      geom_point(alpha = 0.8) +
+      ylab("Outward insurance") +
+      xlab("Inward insurance") +
+      scale_colour_gradientn(colours = color_s) +
+      #scale_colour_gradientn(colours = brewer.pal(n = 8, name = "YlOrRd"))+
+      theme_bw() +
+      theme(
+        legend.position = "none",
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 10)
+      ) +
+      geom_abline(
+        slope = 1,
+        intercept = as.numeric(quantile(
+          all_cells_B03$Outward - all_cells_B03$Inward,
+          prob = 0.8,
+          na.rm = T
+        )),
+        linetype = "dashed",
+        size = 0.5
+      ) +
+      geom_abline(
+        slope = 1,
+        intercept = as.numeric(quantile(
+          all_cells_B03$Outward - all_cells_B03$Inward,
+          prob = 0.2,
+          na.rm = T
+        )),
+        linetype = "dashed",
+        size = 0.5
+      ) +
+      ylim(0, 100) +
+      xlim(0, 100)
+    
+    S2_Fig_4 <- gridExtra::arrangeGrob(S2_Fig_4a, S2_Fig_4b, S2_Fig_4c,
+                                       S2_Fig_4d, S2_Fig_4e, S2_Fig_4f, ncol = 3)
+    ggsave(
+      file = here::here("outputs", "S2_Fig_4.tiff"),
+      S2_Fig_4,
+      width = 23,
+      height = 14,
+      dpi = 300,
+      units = "cm",
+      device = 'tiff'
+    )
+    
+    #Functional radius Spatial autocorelation
+    
+    #BO1
+    coords <- sf::st_coordinates(Insu_B01)
+    nb <- spdep::knn2nb(spdep::knearneigh(coords, k = 8))
+    lw <- spdep::nb2listw(nb, style = "W")
+    join_count_results <- spdep::joincount.multi(Insu_B01$Category, lw)
+    jc_df <- as.data.frame(join_count_results)
+    jc_df$`z-value` <- as.numeric(jc_df$`z-value`)
+    jc_df$p_value <- 2 * (1 - pnorm(abs(jc_df$`z-value`)))
+    jc_df$significance <- cut(
+      jc_df$p_value,
+      breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
+      labels = c("***", "**", "*", "ns")
+    )
+    print(jc_df)
+    
+    #BO2
+    coords <- sf::st_coordinates(Insu_B02)
+    nb <- spdep::knn2nb(spdep::knearneigh(coords, k = 8))
+    lw <- spdep::nb2listw(nb, style = "W")
+    join_count_results <- spdep::joincount.multi(Insu_B02$Category, lw)
+    jc_df <- as.data.frame(join_count_results)
+    jc_df$`z-value` <- as.numeric(jc_df$`z-value`)
+    jc_df$p_value <- 2 * (1 - pnorm(abs(jc_df$`z-value`)))
+    jc_df$significance <- cut(
+      jc_df$p_value,
+      breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
+      labels = c("***", "**", "*", "ns")
+    )
+    print(jc_df)
+    
+    #BO3
+    coords <- sf::st_coordinates(Insu_B03)
+    nb <- spdep::knn2nb(spdep::knearneigh(coords, k = 8))
+    lw <- spdep::nb2listw(nb, style = "W")
+    join_count_results <- spdep::joincount.multi(Insu_B03$Category, lw)
+    jc_df <- as.data.frame(join_count_results)
+    jc_df$`z-value` <- as.numeric(jc_df$`z-value`)
+    jc_df$p_value <- 2 * (1 - pnorm(abs(jc_df$`z-value`)))
+    jc_df$significance <- cut(
+      jc_df$p_value,
+      breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
+      labels = c("***", "**", "*", "ns")
+    )
+    print(jc_df)
+
+#----
