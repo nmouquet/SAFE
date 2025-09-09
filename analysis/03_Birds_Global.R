@@ -41,6 +41,7 @@
 #'    - outputs/S3_Fig_4
 #'    - outputs/S3_Fig_5
 #'    - outputs/S3_Fig_6
+#'    - outputs/S3_Fig_7
 #'
 #' @author Nicolas Mouquet, \email{nicolas.mouquet@@cnrs.fr},
 #' @date 2023/05/22 first created, major update 2024/05/10 & 2025/03/01
@@ -128,7 +129,7 @@ Insu <- function(insured, insurer, occ_list, dist_mat, D_insu, D_thr) {
 }
 #----
 
-#### Set param, Load Data & Compute functional space, Fig_5b adn S3 ----
+#### Set param, Load Data & Compute functional space, Fig_5b and S3 ----
 
 options(taxa = "birds", dispersion_max = 350000)
 
@@ -436,7 +437,7 @@ disp_max = 350000
 per_buff_all <- 0.25 #used to sample the neighboring cells if needed (to speed up computation)
 occ_list <- occ_list
 dist_mat <- disttrait
-D_insu <- median(disttrait) * 0.3
+D_insu <- median(disttrait) * 0.2
 D_thr <- 90
 
 #sp_cell <- sample(sp_cell,10000) #used to sample the cells if needed (to speed up computation)
@@ -1442,7 +1443,7 @@ save(
 )
 #----
 
-###PA Fig_6_b and Fig_S3_4----
+###PA Fig_6_b and S3_Fig_6----
 library(sf)
 library(terra)
 library(exactextractr)
@@ -2004,3 +2005,846 @@ ggsave(
 )
 
 #----
+
+###SENSITIVITY ANALYSIS S3_Fig_7 and S3_Fig_8----
+
+#Create a single df 
+
+Insu_R01 <-get(load(here::here('results','birds_insurance_R01.RData')))
+Insu_R02 <-get(load(here::here('results','birds_insurance.RData')))
+Insu_R04 <-get(load(here::here('results','birds_insurance_R04.RData')))
+
+Insu_B100 <-get(load(here::here('results','birds_insurance_B100.RData')))
+Insu_B200 <-get(load(here::here('results','birds_insurance_B200.RData')))
+Insu_B350 <-get(load(here::here('results','birds_insurance.RData')))
+
+Insu_R01 <- Insu_R01[,c("cell_focal","Inward","Outward","Nsp_loc","cells","cells_used","real_cell_id","longitude","latitude","SS_status")]
+Insu_R02 <- Insu_R02[,c("cell_focal","Inward","Outward","SS_status")]
+Insu_R04 <- Insu_R04[,c("cell_focal","Inward","Outward","SS_status")]
+
+Insu_B100 <- Insu_B100[,c("cell_focal","Inward","Outward","SS_status")]
+Insu_B200 <- Insu_B200[,c("cell_focal","Inward","Outward","SS_status")]
+Insu_B350 <- Insu_B350[,c("cell_focal","Inward","Outward","SS_status")]
+
+names(Insu_R01)[2] <- "Inward_R01"
+names(Insu_R01)[3] <- "Outward_R01"
+names(Insu_R01)[10] <- "SS_status_R01"
+
+colnames(Insu_R02) <- c("cell_focal","Inward_R02","Outward_R02","SS_status_R02")
+colnames(Insu_R04) <- c("cell_focal","Inward_R04","Outward_R04","SS_status_R04")
+colnames(Insu_B100) <- c("cell_focal","Inward_B100","Outward_B100","SS_status_B100")
+colnames(Insu_B200) <- c("cell_focal","Inward_B200","Outward_B200","SS_status_B200")
+colnames(Insu_B350) <- c("cell_focal","Inward_B350","Outward_B350","SS_status_B350")
+
+Insu_all <- merge(Insu_R01,Insu_R02)
+Insu_all <- merge(Insu_all,Insu_R04)
+Insu_all <- merge(Insu_all,Insu_B100)
+Insu_all <- merge(Insu_all,Insu_B200)
+Insu_all <- merge(Insu_all,Insu_B350)
+
+
+#Add the human impact intel and the PAs 
+
+load(here::here("results", "birds_insurance_hi_pa.RData"))
+hi_pa <- birds_insurance_hi_pa[,c("cell_focal", "hi", "PA_I", "PA_I_II", "PA_I_IV" )]
+Insu_all_hi_pa <- merge(Insu_all,hi_pa)  
+Insu_all_hi_pa <- Insu_all_hi_pa[!is.na(Insu_all_hi_pa$SS_status_R01),]
+
+save(Insu_all_hi_pa,file=here::here("results","Insu_all_hi_pa.RData"))
+
+#S3_Fig_7
+
+library(ggplot2)
+library(RColorBrewer)
+
+Insu_all_hi_pa <- Insu_all_hi_pa[
+  order(Insu_all_hi_pa$Nsp_loc, decreasing = F),
+]
+
+#S3_Fig_7a
+S3_Fig_7a <- ggplot(
+  Insu_all_hi_pa,
+  aes(x = Inward_R01, y = Outward_R01, color = Nsp_loc)
+) +
+  geom_point(alpha = 0.8, size = 0.9) +
+  ylab("Outward insurance") +
+  xlab("Inward insurance") +
+  scale_colour_gradientn(colours = color_s) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      birds_insurance$Outward_R01 - birds_insurance$Inward_R01,
+      prob = 0.9,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      birds_insurance$Outward_R01 - birds_insurance$Inward_R01,
+      prob = 0.1,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  ylim(0, 100) +
+  xlim(0, 100)
+
+#S3_Fig_7b
+S3_Fig_7b <- ggplot(
+  Insu_all_hi_pa,
+  aes(x = Inward_R02, y = Outward_R02, color = Nsp_loc)
+) +
+  geom_point(alpha = 0.8, size = 0.9) +
+  ylab("Outward insurance") +
+  xlab("Inward insurance") +
+  scale_colour_gradientn(colours = color_s) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      birds_insurance$Outward_R02 - birds_insurance$Inward_R02,
+      prob = 0.9,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      birds_insurance$Outward_R02 - birds_insurance$Inward_R02,
+      prob = 0.1,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  ylim(0, 100) +
+  xlim(0, 100)
+
+#S3_Fig_7c
+S3_Fig_7c <- ggplot(
+  Insu_all_hi_pa,
+  aes(x = Inward_R04, y = Outward_R04, color = Nsp_loc)
+) +
+  geom_point(alpha = 0.8, size = 0.9) +
+  ylab("Outward insurance") +
+  xlab("Inward insurance") +
+  scale_colour_gradientn(colours = color_s) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      birds_insurance$Outward_R04 - birds_insurance$Inward_R04,
+      prob = 0.9,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      birds_insurance$Outward_R04 - birds_insurance$Inward_R04,
+      prob = 0.1,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  ylim(0, 100) +
+  xlim(0, 100)
+
+#S3_Fig_7d
+S3_Fig_7d <- ggplot(
+  Insu_all_hi_pa,
+  aes(x = SS_status_R01, y = hi, fill = SS_status_R01)
+) +
+  geom_boxplot(outlier.shape = NA) +
+  # Add count labels
+  # geom_text(data = box_labels,
+  #           aes(x = SS_status, y = med, label = paste0("n=", n)),
+  #           inherit.aes = FALSE, size = 4, color = "black")+
+  ylab("Human footprint") +
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    ) 
+  ) +
+  ylim(0, 30) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none"
+  )
+
+kruskal.test(hi ~ SS_status_R01, data = Insu_all_hi_pa)
+FSA::dunnTest(
+  Insu_all_hi_pa$hi ~ Insu_all_hi_pa$SS_status_R01,
+  method = "bonferroni"
+)
+
+#S3_Fig_7e
+S3_Fig_7e <- ggplot(
+  Insu_all_hi_pa,
+  aes(x = SS_status_R02, y = hi, fill = SS_status_R02)
+) +
+  geom_boxplot(outlier.shape = NA) +
+  # Add count labels
+  # geom_text(data = box_labels,
+  #           aes(x = SS_status, y = med, label = paste0("n=", n)),
+  #           inherit.aes = FALSE, size = 4, color = "black")+
+  ylab("Human footprint") +
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    ) 
+  ) +
+  ylim(0, 30) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none"
+  )
+
+kruskal.test(hi ~ SS_status_R02, data = Insu_all_hi_pa)
+FSA::dunnTest(
+  Insu_all_hi_pa$hi ~ Insu_all_hi_pa$SS_status_R02,
+  method = "bonferroni"
+)
+
+#S3_Fig_7f
+S3_Fig_7f <- ggplot(
+  Insu_all_hi_pa,
+  aes(x = SS_status_R04, y = hi, fill = SS_status_R04)
+) +
+  geom_boxplot(outlier.shape = NA) +
+  # Add count labels
+  # geom_text(data = box_labels,
+  #           aes(x = SS_status, y = med, label = paste0("n=", n)),
+  #           inherit.aes = FALSE, size = 4, color = "black")+
+  ylab("Human footprint") +
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    ) 
+  ) +
+  ylim(0, 30) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none"
+  )
+
+kruskal.test(hi ~ SS_status_R04, data = Insu_all_hi_pa)
+FSA::dunnTest(
+  Insu_all_hi_pa$hi ~ Insu_all_hi_pa$SS_status_R04,
+  method = "bonferroni"
+)
+
+#S3_Fig_7g
+sub_Insu_all_hi_pa <- Insu_all_hi_pa[
+  Insu_all_hi_pa$PA_I_IV >= ThtPA,
+]
+
+box_labels <- aggregate(
+  PA_I_IV ~ SS_status_R01,
+  data = sub_Insu_all_hi_pa,
+  FUN = function(x) c(n = length(x), med = median(x, na.rm = TRUE))
+)
+box_labels$n <- box_labels$PA_I_IV[, "n"]
+box_labels$med <- box_labels$PA_I_IV[, "med"] + 5
+box_labels$PA_I_IV <- NULL # Remove the matrix column
+
+S3_Fig_7g <- ggplot(
+  sub_Insu_all_hi_pa,
+  aes(x = SS_status_R01, y = PA_I_IV, fill = SS_status_R01)
+) +
+  geom_boxplot(outlier.shape = NA) +
+  # Add count labels
+  # geom_text(data = box_labels,
+  #           aes(x = SS_status, y = med, label = paste0("n=", n)),
+  #           inherit.aes = FALSE, size = 4, color = "black")+
+  ylab("% of PA (I-IV) within cells") +
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    ) 
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none"
+  )
+
+#S3_Fig_7h
+sub_Insu_all_hi_pa <- Insu_all_hi_pa[
+  Insu_all_hi_pa$PA_I_IV >= ThtPA,
+]
+
+box_labels <- aggregate(
+  PA_I_IV ~ SS_status_R02,
+  data = sub_Insu_all_hi_pa,
+  FUN = function(x) c(n = length(x), med = median(x, na.rm = TRUE))
+)
+box_labels$n <- box_labels$PA_I_IV[, "n"]
+box_labels$med <- box_labels$PA_I_IV[, "med"] + 5
+box_labels$PA_I_IV <- NULL # Remove the matrix column
+
+S3_Fig_7h <- ggplot(
+  sub_Insu_all_hi_pa,
+  aes(x = SS_status_R02, y = PA_I_IV, fill = SS_status_R02)
+) +
+  geom_boxplot(outlier.shape = NA) +
+  # Add count labels
+  # geom_text(data = box_labels,
+  #           aes(x = SS_status, y = med, label = paste0("n=", n)),
+  #           inherit.aes = FALSE, size = 4, color = "black")+
+  ylab("% of PA (I-IV) within cells") +
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    ) 
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none"
+  )
+
+#S3_Fig_7i
+sub_Insu_all_hi_pa <- Insu_all_hi_pa[
+  Insu_all_hi_pa$PA_I_IV >= ThtPA,
+]
+
+box_labels <- aggregate(
+  PA_I_IV ~ SS_status_R04,
+  data = sub_Insu_all_hi_pa,
+  FUN = function(x) c(n = length(x), med = median(x, na.rm = TRUE))
+)
+box_labels$n <- box_labels$PA_I_IV[, "n"]
+box_labels$med <- box_labels$PA_I_IV[, "med"] + 5
+box_labels$PA_I_IV <- NULL # Remove the matrix column
+
+S3_Fig_7i <- ggplot(
+  sub_Insu_all_hi_pa,
+  aes(x = SS_status_R04, y = PA_I_IV, fill = SS_status_R04)
+) +
+  geom_boxplot(outlier.shape = NA) +
+  # Add count labels
+  # geom_text(data = box_labels,
+  #           aes(x = SS_status, y = med, label = paste0("n=", n)),
+  #           inherit.aes = FALSE, size = 4, color = "black")+
+  ylab("% of PA (I-IV) within cells") +
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    ) 
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none"
+  )
+
+#Save
+
+S3_Fig_7 <- gridExtra::arrangeGrob(S3_Fig_7a, S3_Fig_7b, S3_Fig_7c,
+                                   S3_Fig_7d, S3_Fig_7e, S3_Fig_7f,
+                                   S3_Fig_7g, S3_Fig_7h, S3_Fig_7i, ncol = 3)
+ggsave(
+  file = here::here("outputs", "S3_Fig_7.tiff"),
+  S3_Fig_7,
+  width = 23,
+  height = 21,
+  dpi = 300,
+  units = "cm",
+  device = 'tiff'
+)
+
+
+#S3_Fig_8
+
+library(ggplot2)
+library(RColorBrewer)
+
+#S3_Fig_8a
+Insu_all_hi_pa <- Insu_all_hi_pa[
+  order(Insu_all_hi_pa$Nsp_loc, decreasing = F),
+]
+
+S3_Fig_8a <- ggplot(
+  Insu_all_hi_pa,
+  aes(x = Inward_B100, y = Outward_B100, color = Nsp_loc)
+) +
+  geom_point(alpha = 0.8, size = 0.9) +
+  ylab("Outward insurance") +
+  xlab("Inward insurance") +
+  scale_colour_gradientn(colours = color_s) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      birds_insurance$Outward_B100 - birds_insurance$Inward_B100,
+      prob = 0.9,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      birds_insurance$Outward_B100 - birds_insurance$Inward_B100,
+      prob = 0.1,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  ylim(0, 100) +
+  xlim(0, 100)
+
+#S3_Fig_8b
+S3_Fig_8b <- ggplot(
+  Insu_all_hi_pa,
+  aes(x = Inward_B200, y = Outward_B200, color = Nsp_loc)
+) +
+  geom_point(alpha = 0.8, size = 0.9) +
+  ylab("Outward insurance") +
+  xlab("Inward insurance") +
+  scale_colour_gradientn(colours = color_s) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      birds_insurance$Outward_B200 - birds_insurance$Inward_B200,
+      prob = 0.9,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      birds_insurance$Outward_B200 - birds_insurance$Inward_B200,
+      prob = 0.1,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  ylim(0, 100) +
+  xlim(0, 100)
+
+#S3_Fig_8c
+S3_Fig_8c <- ggplot(
+  Insu_all_hi_pa,
+  aes(x = Inward_B350, y = Outward_B350, color = Nsp_loc)
+) +
+  geom_point(alpha = 0.8, size = 0.9) +
+  ylab("Outward insurance") +
+  xlab("Inward insurance") +
+  scale_colour_gradientn(colours = color_s) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      birds_insurance$Outward_B350 - birds_insurance$Inward_B350,
+      prob = 0.9,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  geom_abline(
+    slope = 1,
+    intercept = as.numeric(quantile(
+      birds_insurance$Outward_B350 - birds_insurance$Inward_B350,
+      prob = 0.1,
+      na.rm = T
+    )),
+    linetype = "dashed",
+    size = 0.5
+  ) +
+  ylim(0, 100) +
+  xlim(0, 100)
+
+#S3_Fig_8d
+S3_Fig_8d <- ggplot(
+  Insu_all_hi_pa,
+  aes(x = SS_status_B100, y = hi, fill = SS_status_B100)
+) +
+  geom_boxplot(outlier.shape = NA) +
+  # Add count labels
+  # geom_text(data = box_labels,
+  #           aes(x = SS_status, y = med, label = paste0("n=", n)),
+  #           inherit.aes = FALSE, size = 4, color = "black")+
+  ylab("Human footprint") +
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    ) 
+  ) +
+  ylim(0, 30) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none"
+  )
+
+kruskal.test(hi ~ SS_status_B100, data = Insu_all_hi_pa)
+FSA::dunnTest(
+  Insu_all_hi_pa$hi ~ Insu_all_hi_pa$SS_status_B100,
+  method = "bonferroni"
+)
+
+#S3_Fig_8e
+S3_Fig_8e <- ggplot(
+  Insu_all_hi_pa,
+  aes(x = SS_status_B200, y = hi, fill = SS_status_B200)
+) +
+  geom_boxplot(outlier.shape = NA) +
+  # Add count labels
+  # geom_text(data = box_labels,
+  #           aes(x = SS_status, y = med, label = paste0("n=", n)),
+  #           inherit.aes = FALSE, size = 4, color = "black")+
+  ylab("Human footprint") +
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    ) 
+  ) +
+  ylim(0, 30) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none"
+  )
+
+kruskal.test(hi ~ SS_status_B200, data = Insu_all_hi_pa)
+FSA::dunnTest(
+  Insu_all_hi_pa$hi ~ Insu_all_hi_pa$SS_status_B200,
+  method = "bonferroni"
+)
+
+#S3_Fig_8f
+S3_Fig_8f <- ggplot(
+  Insu_all_hi_pa,
+  aes(x = SS_status_B350, y = hi, fill = SS_status_B350)
+) +
+  geom_boxplot(outlier.shape = NA) +
+  # Add count labels
+  # geom_text(data = box_labels,
+  #           aes(x = SS_status, y = med, label = paste0("n=", n)),
+  #           inherit.aes = FALSE, size = 4, color = "black")+
+  ylab("Human footprint") +
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    ) 
+  ) +
+  ylim(0, 30) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none"
+  )
+
+kruskal.test(hi ~ SS_status_B350, data = Insu_all_hi_pa)
+FSA::dunnTest(
+  Insu_all_hi_pa$hi ~ Insu_all_hi_pa$SS_status_B350,
+  method = "bonferroni"
+)
+
+#S3_Fig_8g
+sub_Insu_all_hi_pa <- Insu_all_hi_pa[
+  Insu_all_hi_pa$PA_I_IV >= ThtPA,
+]
+
+box_labels <- aggregate(
+  PA_I_IV ~ SS_status_B100,
+  data = sub_Insu_all_hi_pa,
+  FUN = function(x) c(n = length(x), med = median(x, na.rm = TRUE))
+)
+box_labels$n <- box_labels$PA_I_IV[, "n"]
+box_labels$med <- box_labels$PA_I_IV[, "med"] + 5
+box_labels$PA_I_IV <- NULL # Remove the matrix column
+
+S3_Fig_8g <- ggplot(
+  sub_Insu_all_hi_pa,
+  aes(x = SS_status_B100, y = PA_I_IV, fill = SS_status_B100)
+) +
+  geom_boxplot(outlier.shape = NA) +
+  # Add count labels
+  # geom_text(data = box_labels,
+  #           aes(x = SS_status, y = med, label = paste0("n=", n)),
+  #           inherit.aes = FALSE, size = 4, color = "black")+
+  ylab("% of PA (I-IV) within cells") +
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    ) 
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none"
+  )
+
+#S3_Fig_8h
+sub_Insu_all_hi_pa <- Insu_all_hi_pa[
+  Insu_all_hi_pa$PA_I_IV >= ThtPA,
+]
+
+box_labels <- aggregate(
+  PA_I_IV ~ SS_status_B200,
+  data = sub_Insu_all_hi_pa,
+  FUN = function(x) c(n = length(x), med = median(x, na.rm = TRUE))
+)
+box_labels$n <- box_labels$PA_I_IV[, "n"]
+box_labels$med <- box_labels$PA_I_IV[, "med"] + 5
+box_labels$PA_I_IV <- NULL # Remove the matrix column
+
+S3_Fig_8h <- ggplot(
+  sub_Insu_all_hi_pa,
+  aes(x = SS_status_B200, y = PA_I_IV, fill = SS_status_B200)
+) +
+  geom_boxplot(outlier.shape = NA) +
+  # Add count labels
+  # geom_text(data = box_labels,
+  #           aes(x = SS_status, y = med, label = paste0("n=", n)),
+  #           inherit.aes = FALSE, size = 4, color = "black")+
+  ylab("% of PA (I-IV) within cells") +
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    ) 
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none"
+  )
+
+#S3_Fig_8i
+sub_Insu_all_hi_pa <- Insu_all_hi_pa[
+  Insu_all_hi_pa$PA_I_IV >= ThtPA,
+]
+
+box_labels <- aggregate(
+  PA_I_IV ~ SS_status_B350,
+  data = sub_Insu_all_hi_pa,
+  FUN = function(x) c(n = length(x), med = median(x, na.rm = TRUE))
+)
+box_labels$n <- box_labels$PA_I_IV[, "n"]
+box_labels$med <- box_labels$PA_I_IV[, "med"] + 5
+box_labels$PA_I_IV <- NULL # Remove the matrix column
+
+S3_Fig_8i <- ggplot(
+  sub_Insu_all_hi_pa,
+  aes(x = SS_status_B350, y = PA_I_IV, fill = SS_status_B350)
+) +
+  geom_boxplot(outlier.shape = NA) +
+  # Add count labels
+  # geom_text(data = box_labels,
+  #           aes(x = SS_status, y = med, label = paste0("n=", n)),
+  #           inherit.aes = FALSE, size = 4, color = "black")+
+  ylab("% of PA (I-IV) within cells") +
+  scale_fill_manual(
+    values = c(
+      "Source" = "#52A153",
+      "Intermediate" = "#FFF7BA",
+      "Sink" = "#5479C9"
+    ) 
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_blank(),
+    axis.text.y = element_text(size = 8),
+    axis.title.y = element_text(size = 12),
+    legend.position = "none"
+  )
+
+#Save
+
+S3_Fig_8 <- gridExtra::arrangeGrob(S3_Fig_8a, S3_Fig_8b, S3_Fig_8c,
+                                   S3_Fig_8d, S3_Fig_8e, S3_Fig_8f,
+                                   S3_Fig_8g, S3_Fig_8h, S3_Fig_8i, ncol = 3)
+ggsave(
+  file = here::here("outputs", "S3_Fig_8.tiff"),
+  S3_Fig_8,
+  width = 23,
+  height = 21,
+  dpi = 300,
+  units = "cm",
+  device = 'tiff'
+)
+
+#----
+
+###SENSITIVITY ANALYSIS Spatial agregation Table S3_Table_1
+
+load(here::here("results", "Insu_all_hi_pa.RData"))
+
+
+# Convert to sf object
+data_sf <- sf::st_as_sf(
+  Insu_all_hi_pa,
+  coords = c("longitude", "latitude"),
+  crs = 4326
+) # WGS 84
+
+# Extract coordinates
+coords <- sf::st_coordinates(data_sf)
+
+# Define spatial neighbors using k=8 nearest neighbors
+nb <- spdep::knn2nb(spdep::knearneigh(coords, k = 8))
+listw <- spdep::nb2listw(nb, style = "W")
+
+# SS_status_R01
+join_count_results <- spdep::joincount.multi(Insu_all_hi_pa$SS_status_R01, listw)
+jc_df <- as.data.frame(join_count_results)
+jc_df$`z-value` <- as.numeric(jc_df$`z-value`)
+jc_df$p_value <- 2 * (1 - pnorm(abs(jc_df$`z-value`)))
+jc_df$significance <- cut(
+  jc_df$p_value,
+  breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
+  labels = c("***", "**", "*", "ns")
+)
+jc_df
+
+# SS_status_R02
+join_count_results <- spdep::joincount.multi(Insu_all_hi_pa$SS_status_R02, listw)
+jc_df <- as.data.frame(join_count_results)
+jc_df$`z-value` <- as.numeric(jc_df$`z-value`)
+jc_df$p_value <- 2 * (1 - pnorm(abs(jc_df$`z-value`)))
+jc_df$significance <- cut(
+  jc_df$p_value,
+  breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
+  labels = c("***", "**", "*", "ns")
+)
+jc_df
+
+# SS_status_R04
+join_count_results <- spdep::joincount.multi(Insu_all_hi_pa$SS_status_R04, listw)
+jc_df <- as.data.frame(join_count_results)
+jc_df$`z-value` <- as.numeric(jc_df$`z-value`)
+jc_df$p_value <- 2 * (1 - pnorm(abs(jc_df$`z-value`)))
+jc_df$significance <- cut(
+  jc_df$p_value,
+  breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
+  labels = c("***", "**", "*", "ns")
+)
+jc_df
+
+# SS_status_B100
+join_count_results <- spdep::joincount.multi(Insu_all_hi_pa$SS_status_B100, listw)
+jc_df <- as.data.frame(join_count_results)
+jc_df$`z-value` <- as.numeric(jc_df$`z-value`)
+jc_df$p_value <- 2 * (1 - pnorm(abs(jc_df$`z-value`)))
+jc_df$significance <- cut(
+  jc_df$p_value,
+  breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
+  labels = c("***", "**", "*", "ns")
+)
+jc_df
+
+# SS_status_B200
+join_count_results <- spdep::joincount.multi(Insu_all_hi_pa$SS_status_B200, listw)
+jc_df <- as.data.frame(join_count_results)
+jc_df$`z-value` <- as.numeric(jc_df$`z-value`)
+jc_df$p_value <- 2 * (1 - pnorm(abs(jc_df$`z-value`)))
+jc_df$significance <- cut(
+  jc_df$p_value,
+  breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
+  labels = c("***", "**", "*", "ns")
+)
+jc_df
+
+# SS_status_B350
+join_count_results <- spdep::joincount.multi(Insu_all_hi_pa$SS_status_B350, listw)
+jc_df <- as.data.frame(join_count_results)
+jc_df$`z-value` <- as.numeric(jc_df$`z-value`)
+jc_df$p_value <- 2 * (1 - pnorm(abs(jc_df$`z-value`)))
+jc_df$significance <- cut(
+  jc_df$p_value,
+  breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
+  labels = c("***", "**", "*", "ns")
+)
+jc_df
+
+#----
+
+
+
+
+
