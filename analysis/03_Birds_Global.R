@@ -23,8 +23,9 @@
 #'    - results/birds_pcoa_avoinet.RData
 #'    - results/birds_insurance.RData : insurance for all cells
 #'    - results/birds_insurance_pa.RData : insurance for all cells + % of protected area
-#'    - results/birds_insurance_hi.RData
-#'    - results/birds_insurance_hi_pa.RData
+#'    - results/birds_insurance_hi.RData : adding the human impact within each cell
+#'    - results/birds_insurance_hi_pa.RData : insurance for all cells + % of protected area + human impact
+#'    - results/birds_Insu_all_hi_pa.RData : used for the sensitivity analysis
 #'    - results/wdpa_I_union.RData
 #'    - results/wdpa_I_II_union.RData
 #'    - results/wdpa_I_IV_union.RData
@@ -35,13 +36,13 @@
 #'    - outputs/Fig_5c.tiff
 #'    - outputs/Fig_5d.tiff
 #'    - outputs/Fig_6.tiff
-#'    - outputs/S3_Fig_1
-#'    - outputs/S3_Fig_2
-#'    - outputs/S3_Fig_3
-#'    - outputs/S3_Fig_4
-#'    - outputs/S3_Fig_5
-#'    - outputs/S3_Fig_6
-#'    - outputs/S3_Fig_7
+#'    - outputs/S3_Fig_1.tiff
+#'    - outputs/S3_Fig_2.tiff
+#'    - outputs/S3_Fig_3.tiff
+#'    - outputs/S3_Fig_4.tiff
+#'    - outputs/S3_Fig_5.tiff
+#'    - outputs/S3_Fig_6.tiff
+#'    - outputs/S3_Fig_7.tiff
 #'
 #' @author Nicolas Mouquet, \email{nicolas.mouquet@@cnrs.fr},
 #' @date 2023/05/22 first created, major update 2024/05/10 & 2025/03/01
@@ -49,6 +50,7 @@
 rm(list = ls(all = TRUE))
 library(ggplot2)
 library(dplyr)
+library(ggpubr)
 
 source(here::here("R", "world_map.R"))
 source(here::here("R", "buffer.R"))
@@ -2050,9 +2052,10 @@ hi_pa <- birds_insurance_hi_pa[,c("cell_focal", "hi", "PA_I", "PA_I_II", "PA_I_I
 Insu_all_hi_pa <- merge(Insu_all,hi_pa)  
 Insu_all_hi_pa <- Insu_all_hi_pa[!is.na(Insu_all_hi_pa$SS_status_R01),]
 
-save(Insu_all_hi_pa,file=here::here("results","Insu_all_hi_pa.RData"))
+save(Insu_all_hi_pa,file=here::here("results","birds_Insu_all_hi_pa.RData"))
 
 #S3_Fig_7
+ThtPA <- 1
 
 library(ggplot2)
 library(RColorBrewer)
@@ -2305,6 +2308,12 @@ S3_Fig_7g <- ggplot(
     legend.position = "none"
   )
 
+kruskal.test(PA_I_IV ~ SS_status_R01, data = Insu_all_hi_pa)
+FSA::dunnTest(
+  Insu_all_hi_pa$PA_I_IV ~ Insu_all_hi_pa$SS_status_R01,
+  method = "bonferroni"
+)
+
 #S3_Fig_7h
 sub_Insu_all_hi_pa <- Insu_all_hi_pa[
   Insu_all_hi_pa$PA_I_IV >= ThtPA,
@@ -2345,6 +2354,12 @@ S3_Fig_7h <- ggplot(
     legend.position = "none"
   )
 
+kruskal.test(PA_I_IV ~ SS_status_R02, data = Insu_all_hi_pa)
+FSA::dunnTest(
+  Insu_all_hi_pa$PA_I_IV ~ Insu_all_hi_pa$SS_status_R02,
+  method = "bonferroni"
+)
+
 #S3_Fig_7i
 sub_Insu_all_hi_pa <- Insu_all_hi_pa[
   Insu_all_hi_pa$PA_I_IV >= ThtPA,
@@ -2384,6 +2399,12 @@ S3_Fig_7i <- ggplot(
     axis.title.y = element_text(size = 12),
     legend.position = "none"
   )
+
+kruskal.test(PA_I_IV ~ SS_status_R04, data = Insu_all_hi_pa)
+FSA::dunnTest(
+  Insu_all_hi_pa$PA_I_IV ~ Insu_all_hi_pa$SS_status_R04,
+  method = "bonferroni"
+)
 
 #Save
 
@@ -2751,9 +2772,9 @@ ggsave(
 
 #----
 
-###SENSITIVITY ANALYSIS Spatial agregation Table S3_Table_1
+###SENSITIVITY ANALYSIS Spatial agregation S3_Table_1, S3_Table_2----
 
-load(here::here("results", "Insu_all_hi_pa.RData"))
+load(here::here("results", "birds_Insu_all_hi_pa.RData"))
 
 
 # Convert to sf object

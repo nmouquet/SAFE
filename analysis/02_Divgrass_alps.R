@@ -1304,7 +1304,7 @@ print(jc_df)
 
 #end----
 
-####SENSITIVITY ANALYSIS----
+####SENSITIVITY ANALYSIS S2_Fig_3, S2_Fig_4----
 color_s <- rev(RColorBrewer::brewer.pal(n = 8, name = "RdBu"))
 
 #Functional Radius S2_Fig_3
