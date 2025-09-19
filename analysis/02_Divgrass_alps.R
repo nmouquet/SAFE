@@ -495,7 +495,7 @@ ggsave(
 
 #----
 
-####LOOP OVER MANY CELLS WITH BUFFERS, Fig_4b,d, S2_Fig_3----
+####LOOP OVER MANY CELLS WITH BUFFERS, Fig_4a,b,d, S2_Fig_3----
 
 sp_cell <- names(all_com_divgrass)
 per_buff_all <- 1
@@ -691,7 +691,7 @@ FSA::dunnTest(
 )
 
 
-#Add env values (finally will not be used)
+#Add env values
 rownames(divgrass_insurance) <- divgrass_insurance$cell_focal
 divgrass_com <- data.frame(divgrass_com)
 rownames(divgrass_com) <- divgrass_com$com
@@ -875,34 +875,47 @@ filtered_divgrass_insurance$Category <- factor(
   filtered_divgrass_insurance$Category,
   levels = c("Source", "Sink")
 )
-category_palette <- c("Sink" = "#5479C9", "Source" = "#52A153")
+category_palette <- c("Sink" = "#688CDE", "Source" = "#71C775")
 
-tmap::tmap_mode("view") # Mode interactif (ou "plot" pour un affichage statique)
-tmap::tm_shape(filtered_divgrass_insurance) +
-  tmap::tm_symbols(
-    col = "Category",
-    palette = category_palette, # Use palette directly, matching categories
-    size = 0.5
-  ) +
-  tmap::tm_layout(legend.show = FALSE)
-
-# library(tmap)
-# tmap::tmap_mode("plot")
-# map <- tm_shape(filtered_divgrass_insurance) +
-#   tm_symbols(
+# tmap::tmap_mode("view") # Mode interactif (ou "plot" pour un affichage statique)
+# tmap::tm_shape(filtered_divgrass_insurance) +
+#   tmap::tm_symbols(
 #     col = "Category",
-#     palette = category_palette,  # Replace with turbo(8) or your palette
+#     palette = category_palette, 
 #     size = 0.5
 #   ) +
-#   tm_layout(legend.show = FALSE)
-# 
-# tmap_save(
-#   tm = map,
-#   filename = here::here("outputs", "map_output.tiff"),
-#   dpi = 300,           # Resolution
-#   width = 10,           # Width in inches
-#   height = 8           # Height in inches
-# )
+#   tmap::tm_layout(legend.show = FALSE)+
+#   tmap::tm_basemap("OpenTopoMap")
+
+europe = rnaturalearth::ne_countries(continent = "europe", scale = "large")
+library(tmap)
+tmap::tmap_mode("plot")
+map <- tm_shape(filtered_divgrass_insurance) +
+  tm_symbols(
+    col = "Category",
+    palette = category_palette, 
+    size = 0.5,
+    shape = 21
+  ) +
+  tm_shape(europe) +
+  tm_borders(lwd = 1) +
+  tm_shape(filtered_divgrass_insurance) +
+  tm_symbols(
+    col = "Category",
+    palette = category_palette,
+    size = 0.5,
+    shape = 21
+  )+
+  tm_layout(legend.show = FALSE)+
+  tmap::tm_basemap("Esri.WorldTerrain", alpha = 0.7)
+
+tmap_save(
+  tm = map,
+  filename = here::here("outputs", "Fig_4a.tiff"),
+  dpi = 300,           
+  width = 10,           
+  height = 8           
+)
 
 #Box plot categories Fig4bleft
 
@@ -1027,7 +1040,7 @@ focal_coords <- pc_axes[rownames(pc_axes) %in% focal_species, ]
 ptsize = 2
 
 Fig_4d <- ggplot(pc_axes, aes(x = Axis1, y = Axis2)) +
-  geom_point(col = "black", alpha = 0.1) +
+  #geom_point(col = "black", alpha = 0.05) +
   geom_vline(xintercept = 0, linetype = "dashed", col = "#9E9E9E") +
   geom_hline(yintercept = 0, linetype = "dashed", col = "#9E9E9E") +
   ylim(min(pcoas_divgrass$vectors[, 2]), max(pcoas_divgrass$vectors[, 2])) +
@@ -1038,22 +1051,26 @@ Fig_4d <- ggplot(pc_axes, aes(x = Axis1, y = Axis2)) +
   theme_bw() +
   geom_point(
     data = pc_axes_sp_notinsu,
-    aes(color = pernotinsu),
+    aes(fill = pernotinsu),
+    shape = 21,
+    color = "gray",
     size = ptsize - 0.2
   ) +
-  scale_color_gradient(low = "lightblue", high = "darkblue") +
+  #scale_color_gradient(low = "lightblue", high = "darkblue") +
+  scale_fill_viridis_c(option = "D",direction = -1)+
   geom_point(
     data = pc_axes_distinct,
     shape = 1,
     col = "#FA6C67",
-    size = ptsize
+    size = ptsize,
+    stroke = 0.7
   ) +
   geom_point(
     data = focal_coords,
-    shape = 1,
-    color = "#FA6C67",
+    shape = 2,
+    color = "#403F3F",
     size = ptsize + 2,
-    stroke = 1.15
+    stroke = 0.7
   ) +
   theme(
     legend.position = "none",
@@ -1130,7 +1147,7 @@ tmap::tm_shape(sub_divgrass_insurance) +
 library(gridExtra)
 library(ggforce)
 
-D_insu <- median(disttrait_divgrass) * 0.3
+D_insu <- median(disttrait_divgrass) * 0.2
 D_thr <- 90
 dist_mat <- disttrait_divgrass
 
@@ -1208,7 +1225,7 @@ fig_sink <- ggplot(pc_axes, aes(x = Axis1, y = Axis2)) +
   ) +
   theme_bw() +
   geom_point(data = pc_insured, col = "black", size = ptsize) +
-  geom_point(data = pc_insured_Di_Q, col = "#FA6C67", size = ptsize) +
+  geom_point(data = pc_insured_Di_Q, col = "#5479C9", size = ptsize) +
   geom_circle(
     aes(x0 = Axis1, y0 = Axis2, r = D_insu),
     data = pc_insurer_Di_Q,
@@ -1246,7 +1263,7 @@ fig_source <- ggplot(pc_axes, aes(x = Axis1, y = Axis2)) +
   geom_circle(
     aes(x0 = Axis1, y0 = Axis2, r = D_insu),
     data = pc_insured_Di_Q,
-    col = "#FA6C67",
+    col = "#5479C9",
     linetype = 2
   ) +
   theme(

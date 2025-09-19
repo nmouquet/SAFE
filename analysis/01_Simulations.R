@@ -451,7 +451,7 @@ sim_90_long <- tidyr::pivot_longer(
 
 a <- ggplot(sim_90_long, aes(D_insu, Inward, colors = Inward_D_C)) +
   geom_boxplot(aes(fill = Inward_D_C), outlier.shape = NA) +
-  ylab("Inward insurance (%)") +
+  ylab("Inward insurance") +
   xlab("Insurance radius") +
   scale_fill_manual(values = c("#D6D6D6", "#90DB9B")) +
   theme_bw() +
@@ -481,7 +481,7 @@ b <- ggplot(
   geom_point(alpha = 0.7, size = 0.9) +
   geom_density_2d(color = "black", alpha = 0.2, size = 0.3) +
   ylim(0, 100) +
-  ylab("Distinct Inward (%)") +
+  ylab("Distinct Inward insurance") +
   xlab("Functional beta diversity") +
   scale_colour_gradientn(colours = rev(brewer.pal(n = 8, name = "RdBu"))) +
   theme_bw() +
@@ -513,7 +513,7 @@ c <- ggplot(
   geom_point(alpha = 0.7, size = 0.9) +
   geom_density_2d(color = "black", alpha = 0.2, size = 0.3) +
   ylim(0, 100) +
-  ylab("Common Inward (%)") +
+  ylab("Common Inward insurance") +
   xlab("Functional beta diversity") +
   scale_colour_gradientn(colours = rev(brewer.pal(n = 8, name = "RdBu"))) +
   theme_bw() +
@@ -545,8 +545,8 @@ d <- ggplot(
   geom_point(alpha = 0.7, size = 0.9) +
   ylim(0, 100) +
   xlim(0, 100) +
-  ylab("Outward (%)") +
-  xlab("Inward (%)") +
+  ylab("Outward insurance") +
+  xlab("Inward insurance") +
   scale_colour_gradientn(colours = rev(brewer.pal(n = 8, name = "RdBu"))) +
   theme_bw() +
   theme(legend.position = "none") +
