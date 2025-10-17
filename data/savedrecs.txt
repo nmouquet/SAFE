@@ -1,0 +1,11 @@
+﻿@article{RN9,
+   author = {Diaz, S. and Cabido, M.},
+   title = {Vive la difference: plant functional diversity matters to ecosystem processes},
+   journal = {Trends in Ecology & Evolution},
+   volume = {16},
+   pages = {646-655},
+   DOI = {10.1016/S0169-5347(01)02283-2},
+   year = {2001},
+   type = {Journal Article}
+}
+
