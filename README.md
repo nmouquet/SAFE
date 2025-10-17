@@ -6,7 +6,7 @@ Research compendium to reproduce analyses and figures of the following article:
 
 > Spatial insurance of distinct ecological functions, by Mouquet N., Mahaut, L., Thuiller, T., Auber, A., 
 > Casajus N., Enquist B.J., Gaüzère P., Loiseau N., Mouillot D., Munoz F., Villéger S. & Violle C.
-> Submited to Ecology Letters
+> Ecology Letters
 
 ## Content 
 
