@@ -29,12 +29,11 @@
 #'    - results/wdpa_I_union.RData
 #'    - results/wdpa_I_II_union.RData
 #'    - results/wdpa_I_IV_union.RData
-#'    - outputs/Fig_5a_1.tiff
-#'    - outputs/Fig_5a_2.tiff
-#'    - outputs/Fig_5a_3.tiff
+#'    - outputs/Fig_5a.tiff
 #'    - outputs/Fig_5b.tiff
 #'    - outputs/Fig_5c.tiff
-#'    - outputs/Fig_5d.tiff
+#'    - outputs/Fig_5d_1.tiff
+#'    - outputs/Fig_5d_2.tiff
 #'    - outputs/Fig_6.tiff
 #'    - outputs/S3_Fig_1.tiff
 #'    - outputs/S3_Fig_2.tiff
@@ -245,11 +244,31 @@ hist(global_Di$global_di)
   )
 
 
-##plot global map
+##plot global map Fig_5b and color scale 
 
 tiff(filename = "outputs/Fig_5b.tiff", width = 2000, height = 1300, res = 300)
 world_map_robin(id = NA, color_s = color_s)
 if (dev.cur() != 1) dev.off()
+
+  # save the color legend of species richness gradients (all panel of the figure 5)
+  color_s <- rev(RColorBrewer::brewer.pal(n = 8, name = "RdBu"))
+  col_fun <- colorRampPalette(color_s)(255)
+  df <- data.frame(
+    x = 1,
+    y = seq(1, 865, length.out = 865),
+    richness = seq(1, 865, length.out = 865)
+  )
+  p <- ggplot(df, aes(x = x, y = y, fill = richness)) +
+    geom_tile() +
+    scale_fill_gradientn(
+      colours = col_fun,
+      name = "Nsp",
+      limits = c(1, 865)
+    ) +
+    theme_void()
+  legend <- get_legend(p)
+  ggdraw(legend)
+  ggsave("outputs/Fig_5b_color_scale.png", plot = legend, width = 1, height = 2, dpi = 300)
 
 #----
 
@@ -894,7 +913,7 @@ ex[ex$Nsp_loc > 120, ]
 
 #end----
 
-####Fig_5a_2 Source within a buffer----
+####Fig_5d_1 Source within a buffer----
 
 focal_cell = 61548
 disp_max = 350000
@@ -1004,7 +1023,7 @@ I_buffer$insurer <- as.numeric(I_buffer$insurer)
 I_buffer$insured <- I_buffer$insured
 
 if (dev.cur() != 1) dev.off()
-tiff(filename = "outputs/Fig_5a_2.tiff", width = 2000, height = 1300, res = 300)
+tiff(filename = "outputs/Fig_5d_1.tiff", width = 2000, height = 1300, res = 300)
 par(mfrow = c(1, 3))
 map_variable(
   I_buffer[, -c(1:3)],
@@ -1033,6 +1052,48 @@ map_variable(
 )
 if (dev.cur() != 1) dev.off()
 
+# save the species richness gradient
+color_s <- rev(RColorBrewer::brewer.pal(n = 8, name = "RdBu"))
+col_fun <- colorRampPalette(color_s)(255)
+df <- data.frame(
+  x = 1,
+  y = seq(min(I_buffer$Div_insurer), max(I_buffer$Div_insurer), length.out = max(I_buffer$Div_insurer)),
+  richness = seq(min(I_buffer$Div_insurer), max(I_buffer$Div_insurer), length.out = max(I_buffer$Div_insurer))
+)
+p <- ggplot(df, aes(x = x, y = y, fill = richness)) +
+  geom_tile() +
+  scale_fill_gradientn(
+    colours = col_fun,
+    name = "Nsp",
+    limits = c(min(I_buffer$Div_insurer), max(I_buffer$Div_insurer))
+  ) +
+  theme_void()
+legend <- get_legend(p)
+ggdraw(legend)
+ggsave("outputs/Fig_5d_1_div_color_scale.png", plot = legend, width = 1, height = 2, dpi = 300)
+
+# save the color legend of species insurance gradient
+color_s <- RColorBrewer::brewer.pal(9, "YlGn")
+
+col_fun <- colorRampPalette(color_s)(255)
+df <- data.frame(
+  x = 1,
+  y = seq(min(I_buffer$Div_insurer), max(I_buffer$Inward), length.out = max(I_buffer$Inward)),
+  insu = seq(min(I_buffer$Inward), max(I_buffer$Inward), length.out = max(I_buffer$Inward))
+)
+p <- ggplot(df, aes(x = x, y = y, fill = insu)) +
+  geom_tile() +
+  scale_fill_gradientn(
+    colours = col_fun,
+    name = "%",
+    limits = c(min(I_buffer$Inward), max(I_buffer$Inward))
+  ) +
+  theme_void()
+legend <- get_legend(p)
+ggdraw(legend)
+ggsave("outputs/Fig_5d_1_per_insu_scale.png", plot = legend, width = 1, height = 2, dpi = 300)
+
+
 # if (dev.cur() != 1) dev.off()
 # tiff(filename = "outputs/Fig_4a_2.tiff", width = 2000, height = 1300, res = 300)
 # par(mfrow = c(1, 3))
@@ -1043,7 +1104,7 @@ if (dev.cur() != 1) dev.off()
 
 #end----
 
-####Fig_5a_3 Sink within a buffer----
+####Fig_5d_2 Sink within a buffer----
 
 focal_cell = 180652
 disp_max = 350000
@@ -1153,7 +1214,7 @@ I_buffer$insurer <- as.numeric(I_buffer$insurer)
 I_buffer$insured <- I_buffer$insured
 
 if (dev.cur() != 1) dev.off()
-tiff(filename = "outputs/Fig_5a_3.tiff", width = 2000, height = 1300, res = 300)
+tiff(filename = "outputs/Fig_5d_2.tiff", width = 2000, height = 1300, res = 300)
 par(mfrow = c(1, 3))
 map_variable(
   I_buffer[, -c(1:3)],
@@ -1181,6 +1242,48 @@ map_variable(
   col = grDevices::colorRampPalette(RColorBrewer::brewer.pal(9, "YlGn"))(255)
 )
 if (dev.cur() != 1) dev.off()
+
+# save the species richness gradient
+color_s <- rev(RColorBrewer::brewer.pal(n = 8, name = "RdBu"))
+col_fun <- colorRampPalette(color_s)(255)
+df <- data.frame(
+  x = 1,
+  y = seq(min(I_buffer$Div_insurer), max(I_buffer$Div_insurer), length.out = max(I_buffer$Div_insurer)),
+  richness = seq(min(I_buffer$Div_insurer), max(I_buffer$Div_insurer), length.out = max(I_buffer$Div_insurer))
+)
+p <- ggplot(df, aes(x = x, y = y, fill = richness)) +
+  geom_tile() +
+  scale_fill_gradientn(
+    colours = col_fun,
+    name = "Nsp",
+    limits = c(min(I_buffer$Div_insurer), max(I_buffer$Div_insurer))
+  ) +
+  theme_void()
+legend <- get_legend(p)
+ggdraw(legend)
+ggsave("outputs/Fig_5d_2_div_color_scale.png", plot = legend, width = 1, height = 2, dpi = 300)
+
+# save the color legend of species insurance gradient
+color_s <- RColorBrewer::brewer.pal(9, "YlGn")
+
+col_fun <- colorRampPalette(color_s)(255)
+df <- data.frame(
+  x = 1,
+  y = seq(min(I_buffer$Inward), max(I_buffer$Inward), length.out = max(I_buffer$Inward)),
+  insu = seq(min(I_buffer$Inward), max(I_buffer$Inward), length.out = max(I_buffer$Inward))
+)
+p <- ggplot(df, aes(x = x, y = y, fill = insu)) +
+  geom_tile() +
+  scale_fill_gradientn(
+    colours = col_fun,
+    name = "%",
+    limits = c(min(I_buffer$Inward), max(I_buffer$Inward))
+  ) +
+  theme_void()
+legend <- get_legend(p)
+ggdraw(legend)
+ggsave("outputs/Fig_5d_2_per_insu_scale.png", plot = legend, width = 1, height = 2, dpi = 300)
+
 
 # if (dev.cur() != 1) dev.off()
 # tiff(filename = "outputs/Fig_4a_3.tiff", width = 2000, height = 1300, res = 300)

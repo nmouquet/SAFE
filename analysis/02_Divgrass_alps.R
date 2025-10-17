@@ -771,7 +771,8 @@ Fig_4b_right <- ggplot(
   geom_point(alpha = 0.8) +
   ylab("Outward insurance") +
   xlab("Inward insurance") +
-  scale_colour_gradientn(colours = color_s) +
+  scale_colour_gradientn(colours = color_s,
+                         name = "Log(Nsp)") +
   #scale_colour_gradientn(colours = brewer.pal(n = 8, name = "YlOrRd"))+
   theme_bw() +
   theme(
