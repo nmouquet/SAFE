@@ -267,7 +267,7 @@ if (dev.cur() != 1) dev.off()
     ) +
     theme_void()
   legend <- get_legend(p)
-  ggdraw(legend)
+  cowplot::ggdraw(legend)
   ggsave("outputs/Fig_5b_color_scale.png", plot = legend, width = 1, height = 2, dpi = 300)
 
 #----
@@ -407,7 +407,7 @@ all_cell_occ <- as.integer(unique(names(occ_list)))
 max_disp = 350000 #distance based on M. W. McKnight, P. S. White, R. I. McDonald, J. F. Lamoreux, W. Sechrest, R. S. Ridgely, S. N. Stuart, Putting beta-diversity on the map: Broad-scale congruence and coincidence in the extremes. Plos Biology 5, 2424-2432 (2007).
 
 buffer(
-  cell_id = all_cell_occ,
+  cell_id = 11158,
   plot = FALSE,
   buff_rad = max_disp,
   distance = TRUE

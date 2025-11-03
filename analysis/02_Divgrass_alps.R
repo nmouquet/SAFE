@@ -359,20 +359,20 @@ neighbors <- Div_grass_french_alps[alpine_within_radius[[id]], ]
 buffer_Xkm <- sf::st_buffer(reference_point, dist = 3000)
 buffer_Xkm_wgs84 <- sf::st_transform(buffer_Xkm, crs = 4326)
 
-#map
-tmap::tmap_mode("view") # Enable interactive mode
-
-tmap::tm_shape(french_alps) +
-  tmap::tm_polygons(col = "lightblue", border.col = "black") +
-  tmap::tm_shape(Div_grass_french_alps) +
-  tmap::tm_shape(buffer_Xkm_wgs84) + # Add the buffer as a polygon
-  tmap::tm_polygons(col = "green", fill_alpha = 0.3, border.col = "darkgreen") + # Customize buffer appearance
-  tmap::tm_shape(Div_grass_french_alps) +
-  tmap::tm_dots(fill = "gray", size = 0.5) +
-  tmap::tm_shape(reference_point) +
-  tmap::tm_dots(fill = "red", size = 0.5) + # Plot the selected reference point
-  tmap::tm_shape(neighbors) +
-  tmap::tm_dots(fill = "blue", size = 0.4) # Plot its neighbors within 30 km
+#map (need to define buffer_Xkm_wgs84 before); exemple map only
+  # tmap::tmap_mode("view") # Enable interactive mode
+  # 
+  # tmap::tm_shape(french_alps) +
+  #   tmap::tm_polygons(col = "lightblue", border.col = "black") +
+  #   tmap::tm_shape(Div_grass_french_alps) +
+  #   tmap::tm_shape(buffer_Xkm_wgs84) + # Add the buffer as a polygon
+  #   tmap::tm_polygons(col = "green", fill_alpha = 0.3, border.col = "darkgreen") + # Customize buffer appearance
+  #   tmap::tm_shape(Div_grass_french_alps) +
+  #   tmap::tm_dots(fill = "gray", size = 0.5) +
+  #   tmap::tm_shape(reference_point) +
+  #   tmap::tm_dots(fill = "red", size = 0.5) + # Plot the selected reference point
+  #   tmap::tm_shape(neighbors) +
+  #   tmap::tm_dots(fill = "blue", size = 0.4) # Plot its neighbors within 30 km
 #----
 
 ####TRAITS #1----
